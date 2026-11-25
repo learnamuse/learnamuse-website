@@ -28,7 +28,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link href="/contact-us/" className={`${btnPrimary} hidden !py-2.5 sm:inline-flex`}>
+          <Link href="/contact-us/" className={`${btnPrimary} !py-2.5 max-sm:hidden`}>
             همکاری با ما
             <ArrowForward className="size-4" />
           </Link>

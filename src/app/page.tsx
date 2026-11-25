@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { pages, site, getCourse, getCertificates, courseRoute } from "@/lib/content";
+import { ogBase } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/url";
 import { container, btnPrimary, btnSecondary, eyebrow } from "@/components/ui/styles";
 import { Diamond, DiamondRule } from "@/components/ui/Diamond";
@@ -12,6 +13,7 @@ import { VerifyForm } from "@/components/certificates/VerifyForm";
 export const metadata: Metadata = {
   alternates: { canonical: absoluteUrl("/") },
   openGraph: {
+      ...ogBase,
     url: absoluteUrl("/"),
     title: `${site.name} | ${site.nameEn}`,
     description: site.tagline,
@@ -231,7 +233,7 @@ export default function Home() {
       {/* ---------------------------------------------------- Verify a cert */}
       <section aria-labelledby="verify-title" className="py-16 sm:py-24">
         <div className={container}>
-          <div className="grid items-center gap-8 rounded-[2rem] border border-line bg-surface p-6 shadow-card sm:p-10 lg:grid-cols-[auto_1fr_1.1fr] lg:gap-10">
+          <div className="grid grid-cols-1 items-center gap-8 rounded-[2rem] border border-line bg-surface p-6 shadow-card sm:p-10 lg:grid-cols-[auto_1fr_1.1fr] lg:gap-10">
             <span className="relative inline-flex size-20 items-center justify-center text-gold" aria-hidden="true">
               <Diamond className="absolute inset-0 size-20 opacity-25" />
               <ShieldCheck className="relative size-9 text-ink" />

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { pages, site } from "@/lib/content";
+import { ogBase } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/url";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { container } from "@/components/ui/styles";
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
   title: contact.title,
   description,
   alternates: { canonical: absoluteUrl("/contact-us/") },
-  openGraph: { url: absoluteUrl("/contact-us/"), title: `${contact.title} – ${site.name}`, description },
+  openGraph: { ...ogBase, url: absoluteUrl("/contact-us/"), title: `${contact.title} – ${site.name}`, description },
 };
 
 export default function ContactPage() {

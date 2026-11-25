@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCourses, getCourse, getCertificates, courseRoute, site } from "@/lib/content";
+import { ogBase } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/url";
 import { container } from "@/components/ui/styles";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -28,6 +29,7 @@ export async function generateMetadata({ params }: PageProps<"/certificates/[cou
     description,
     alternates: { canonical: absoluteUrl(route) },
     openGraph: {
+      ...ogBase,
       url: absoluteUrl(route),
       title: `${course.titleFa} – ${site.name}`,
       description,

@@ -6,7 +6,7 @@ import { ArrowForward, ShieldCheck } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
   title: "صفحه پیدا نشد",
-  robots: { index: false },
+  // Next.js already emits <meta name="robots" content="noindex"> for the not-found page.
 };
 
 export default function NotFound() {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { pages, site } from "@/lib/content";
+import { ogBase } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/url";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Diamond } from "@/components/ui/Diamond";
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   title: about.title,
   description: about.intro,
   alternates: { canonical: absoluteUrl("/about-us/") },
-  openGraph: { url: absoluteUrl("/about-us/"), title: `${about.title} – ${site.name}`, description: about.intro },
+  openGraph: { ...ogBase, url: absoluteUrl("/about-us/"), title: `${about.title} – ${site.name}`, description: about.intro },
 };
 
 /** Each value gets its own icon and accent so the three cards read as distinct ideas. */

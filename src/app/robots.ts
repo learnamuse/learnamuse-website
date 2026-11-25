@@ -10,7 +10,8 @@ export const dynamic = "force-static";
  */
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/_next/", "/_img/"] },
+    // Don't block /_next/ (JS/CSS needed for rendering) or /_img/ (page images) from crawlers.
+    rules: { userAgent: "*", allow: "/" },
     sitemap: absoluteUrl("/sitemap.xml"),
   };
 }

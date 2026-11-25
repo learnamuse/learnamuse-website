@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Vazirmatn } from "next/font/google";
 import { site } from "@/lib/content";
 import { SITE_ORIGIN, BASE_PATH, asset } from "@/lib/url";
+import { ogBase } from "@/lib/seo";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import "./globals.css";
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
   title: { default: `${site.name} | ${site.nameEn} – ${site.tagline}`, template: `%s – ${site.name} | ${site.nameEn}` },
   description: site.tagline,
   icons: { icon: asset(site.logo.mark), apple: asset(site.logo.mark) },
-  openGraph: { siteName: `${site.name} | ${site.nameEn}`, locale: "fa_IR", type: "website" },
+  openGraph: ogBase,
 };
 
 export const viewport: Viewport = {

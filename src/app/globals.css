@@ -19,7 +19,7 @@
  */
 :root {
   --brand: #7fd141;
-  --brand-strong: #4f9a1c;   /* AA-contrast green for text/links on light bg */
+  --brand-strong: #407c17;   /* AA-contrast green for text/links on light bg (>= 4.6:1 on bg, surface-2, brand-soft) */
   --brand-soft: #eef8e4;
   --brand-ink: #1f3d0a;      /* text on brand-colored surfaces */
   --gold: #f2b544;
@@ -30,7 +30,7 @@
   --surface-2: #f3f5ee;
   --ink: #14180f;
   --ink-2: #4a5242;
-  --ink-3: #7a8270;
+  --ink-3: #697061;          /* >= 4.6:1 on bg / surface-2 (small hint text) */
   --line: #e3e7da;
 
   --radius: 1.25rem;

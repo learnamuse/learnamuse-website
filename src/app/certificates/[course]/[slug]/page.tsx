@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import QRCode from "qrcode";
 import { getCertificates, getCertificate, courseRoute, site } from "@/lib/content";
+import { ogBase } from "@/lib/seo";
 import { absoluteUrl, asset } from "@/lib/url";
 import { container } from "@/components/ui/styles";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -38,6 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: { canonical: url },
     openGraph: {
+      ...ogBase,
       type: "article",
       url,
       title: `${title} – ${site.name}`,

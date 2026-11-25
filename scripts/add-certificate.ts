@@ -85,7 +85,8 @@ let photoRel: string | null = null;
 let photoSrc: string | null = null;
 let photoDest: string | null = null;
 if (values.photo) {
-  photoSrc = path.resolve(values.photo);
+  // `npm run` changes cwd to the repo root; resolve relative paths against where the user ran it.
+  photoSrc = path.resolve(process.env.INIT_CWD ?? process.cwd(), values.photo);
   if (!fs.existsSync(photoSrc) || !fs.statSync(photoSrc).isFile()) fail(`photo not found: ${values.photo}`);
   let ext = path.extname(photoSrc).toLowerCase();
   if (ext === ".jpeg") ext = ".jpg";

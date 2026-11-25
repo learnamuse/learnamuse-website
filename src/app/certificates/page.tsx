@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { getCourses, getCertificates, courseRoute, site } from "@/lib/content";
+import { ogBase } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/url";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { container } from "@/components/ui/styles";
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: absoluteUrl("/certificates/") },
-  openGraph: { url: absoluteUrl("/certificates/"), title: `${title} – ${site.name}`, description },
+  openGraph: { ...ogBase, url: absoluteUrl("/certificates/"), title: `${title} – ${site.name}`, description },
 };
 
 export default function CertificatesPage() {
