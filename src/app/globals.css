@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/*
+ * Learnamuse design tokens.
+ * Brand green sampled from the logo (#7FD141). Gold comes from the certificate badge.
+ * Use these via Tailwind utilities: bg-brand, text-ink, border-line, bg-surface, etc.
+ */
+:root {
+  --brand: #7fd141;
+  --brand-strong: #4f9a1c;   /* AA-contrast green for text/links on light bg */
+  --brand-soft: #eef8e4;
+  --brand-ink: #1f3d0a;      /* text on brand-colored surfaces */
+  --gold: #f2b544;
+  --gold-soft: #fdf3dc;
+
+  --bg: #fbfcf8;
+  --surface: #ffffff;
+  --surface-2: #f3f5ee;
+  --ink: #14180f;
+  --ink-2: #4a5242;
+  --ink-3: #7a8270;
+  --line: #e3e7da;
+
+  --radius: 1.25rem;
+  --shadow: 0 1px 2px rgb(20 24 15 / 0.04), 0 8px 24px -8px rgb(20 24 15 / 0.10);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand: #8bdc4c;
+    --brand-strong: #9be35f;
+    --brand-soft: #1b2a12;
+    --brand-ink: #0f1a07;
+    --gold: #f5c25f;
+    --gold-soft: #2c2412;
+
+    --bg: #0e110b;
+    --surface: #151a10;
+    --surface-2: #1c2216;
+    --ink: #eef2e8;
+    --ink-2: #b9c1ae;
+    --ink-3: #8a9380;
+    --line: #2a3222;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
+  }
+}
+
+:root[data-theme="dark"] {
+  --brand: #8bdc4c;
+  --brand-strong: #9be35f;
+  --brand-soft: #1b2a12;
+  --brand-ink: #0f1a07;
+  --gold: #f5c25f;
+  --gold-soft: #2c2412;
+  --bg: #0e110b;
+  --surface: #151a10;
+  --surface-2: #1c2216;
+  --ink: #eef2e8;
+  --ink-2: #b9c1ae;
+  --ink-3: #8a9380;
+  --line: #2a3222;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
+}
+
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-ink: var(--brand-ink);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --radius-card: var(--radius);
+  --shadow-card: var(--shadow);
+  --font-sans: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01"; /* Vazirmatn: Persian digits stay Persian */
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+}

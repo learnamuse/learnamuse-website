@@ -1,0 +1,42 @@
+{
+  "name": "لرناموز",
+  "nameEn": "Learnamuse",
+  "tagline": "یادگیری برای فردایی بهتر",
+  "url": "https://learnamuse.com",
+  "lang": "fa-IR",
+  "dir": "rtl",
+  "logo": {
+    "full": "/images/2026/07/learnamuse-with-logo.png",
+    "mark": "/images/2025/01/LOGO-LearnAmuse-Green-256.png",
+    "markWhite": "/images/2025/01/LOGO-LearnAmuse-Green-256-white-Custom-Custom.png"
+  },
+  "nav": [
+    {
+      "label": "خانه",
+      "route": "/"
+    },
+    {
+      "label": "ارتباط با ما",
+      "route": "/contact-us/"
+    },
+    {
+      "label": "درباره ما",
+      "route": "/about-us/"
+    }
+  ],
+  "footer": {
+    "cta": "در صورت تمایل به همکاری، می‌توانید با ما در ارتباط باشید.",
+    "copyright": "@ لرناموز | تمامی حقوق محفوظ است."
+  },
+  "contact": {
+    "telegram": "https://t.me/LearnAmuseSupport",
+    "telegramHandle": "@LearnAmuseSupport",
+    "email": "no-reply@learnamuse.com"
+  },
+  "social": [
+    {
+      "label": "Telegram",
+      "href": "https://t.me/LearnAmuseSupport"
+    }
+  ]
+}

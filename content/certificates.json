@@ -1,0 +1,262 @@
+{
+  "courses": [
+    {
+      "slug": "aitoolbox",
+      "titleEn": "AI Toolbox",
+      "titleFa": "کارگاه جعبه‌ابزار هوش‌مصنوعی لرناموز",
+      "partner": "دبستان پسرانه هما",
+      "partnerLabel": "با همکاری دبستان پسرانه هما",
+      "durationHours": 7,
+      "durationFa": "7 ساعت",
+      "heldOn": "2025-03-08",
+      "heldOnFa": "18 اسفند 1403",
+      "badge": "/images/elementor/thumbs/badge-r2ni0qhlwgfxx37ar06fatk29e592r7a21t8jnmypw.png",
+      "tools": [
+        {
+          "name": "Gamma",
+          "logo": "/images/2025/03/pwa-icon-512x512-1.png"
+        },
+        {
+          "name": "Vira",
+          "logo": "/images/2025/03/vira.549b248.png"
+        },
+        {
+          "name": "Minimax",
+          "logo": "/images/2025/03/hailuo-icon-logo-png_seeklogo-611637.png"
+        },
+        {
+          "name": "Microsoft Copilot",
+          "logo": "/images/2025/03/microsoft-copilot.png"
+        },
+        {
+          "name": "Deepseek",
+          "logo": "/images/2025/03/DeepSeek_logo_icon.png"
+        },
+        {
+          "name": "ChatGPT",
+          "logo": "/images/2025/03/chatgpt-logo-chat-gpt-icon-on-white-background-free-vector.jpg"
+        },
+        {
+          "name": "Google Keyboard",
+          "logo": "/images/2025/03/unnamed.png"
+        },
+        {
+          "name": "Google Lens",
+          "logo": "/images/2025/03/Google_Lens_Icon.svg.png"
+        }
+      ]
+    }
+  ],
+  "certificates": [
+    {
+      "slug": "elham-ghasedi",
+      "course": "aitoolbox",
+      "nameFa": "الهام قاصدی",
+      "nameEn": "Elham Ghasedi",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Elham_Ghasedi.jpg"
+    },
+    {
+      "slug": "fatemeh-amanifar",
+      "course": "aitoolbox",
+      "nameFa": "فاطمه امانی‌فر",
+      "nameEn": "Fatemeh Amanifar",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Fatemeh_Amanifar.jpg"
+    },
+    {
+      "slug": "fatemeh-yousefi",
+      "course": "aitoolbox",
+      "nameFa": "فاطمه یوسفی",
+      "nameEn": "Fatemeh Yousefi",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Fatemeh_Yousefi.jpg"
+    },
+    {
+      "slug": "mahnaz-karbasi",
+      "course": "aitoolbox",
+      "nameFa": "مهناز کرباسی",
+      "nameEn": "Mahnaz Karbasi",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Mahnaz_Karbasi.jpg"
+    },
+    {
+      "slug": "maliheh-nourizadeh",
+      "course": "aitoolbox",
+      "nameFa": "ملیحه نوری‌زاده",
+      "nameEn": "Maliheh Nourizadeh",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Maliheh_Nourizadeh.jpg"
+    },
+    {
+      "slug": "marziyeh-paktinat",
+      "course": "aitoolbox",
+      "nameFa": "مرضیه پاک‌طینت",
+      "nameEn": "Marziyeh Paktinat",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Marziyeh_Paktinat.jpg"
+    },
+    {
+      "slug": "masoumeh-alimardani",
+      "course": "aitoolbox",
+      "nameFa": "معصومه‌ علی‌مردانی",
+      "nameEn": "Masoumeh Alimardani",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Masoumeh_Alimardani.jpg"
+    },
+    {
+      "slug": "mehri-zarrabadi-pour",
+      "course": "aitoolbox",
+      "nameFa": "مهری زرآبادی پور",
+      "nameEn": "Mehri Zarrabadi Pour",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Mehri_Zarrabadi_Pour.jpg"
+    },
+    {
+      "slug": "mojgan-hemmati",
+      "course": "aitoolbox",
+      "nameFa": "مژگان همتی",
+      "nameEn": "Mojgan Hemmati",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Mojgan_Hemmati.jpg"
+    },
+    {
+      "slug": "monireh-rahimdadi",
+      "course": "aitoolbox",
+      "nameFa": "منیره رحیم‌دادی",
+      "nameEn": "Monireh Rahimdadi",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Monireh_Rahimdadi.jpg"
+    },
+    {
+      "slug": "nastaran-mohammadi",
+      "course": "aitoolbox",
+      "nameFa": "نسترن محمدی",
+      "nameEn": "Nastaran Mohammadi",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Nastaran_Mohammadi.jpg"
+    },
+    {
+      "slug": "nazanin-hariri",
+      "course": "aitoolbox",
+      "nameFa": "نازنین حریری",
+      "nameEn": "Nazanin Hariri",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Nazanin_Hariri.jpg"
+    },
+    {
+      "slug": "negar-jalilvand",
+      "course": "aitoolbox",
+      "nameFa": "نگار جلیلوند",
+      "nameEn": "Negar Jalilvand",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Negar_Jalilvand.jpg"
+    },
+    {
+      "slug": "roya-hossein-abadi-rayat",
+      "course": "aitoolbox",
+      "nameFa": "رویا حسین آبادی رعیت",
+      "nameEn": "Roya Hossein Abadi Rayat",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Roya_Hossein_Abadi_Rayat.jpg"
+    },
+    {
+      "slug": "samaneh-gharaei",
+      "course": "aitoolbox",
+      "nameFa": "سمانه قرایی",
+      "nameEn": "Samaneh Gharaei",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Samaneh_Gharaei.jpg"
+    },
+    {
+      "slug": "sanaz-saberian",
+      "course": "aitoolbox",
+      "nameFa": "ساناز صابریان",
+      "nameEn": "Sanaz Saberian",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Sanaz_Saberian.jpg"
+    },
+    {
+      "slug": "sara-rahimi",
+      "course": "aitoolbox",
+      "nameFa": "سارا رحیمی",
+      "nameEn": "Sara Rahimi",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Sara_Rahimi_1.jpg"
+    },
+    {
+      "slug": "setareh-bahrampour",
+      "course": "aitoolbox",
+      "nameFa": "ستاره بهرام‌پور",
+      "nameEn": "Setareh Bahrampour",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Setareh_Bahrampour.jpg"
+    },
+    {
+      "slug": "setareh-khodabakhsh",
+      "course": "aitoolbox",
+      "nameFa": "ستاره خدابخش",
+      "nameEn": "Setareh Khodabakhsh",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Setareh_Khodabakhsh.jpg"
+    },
+    {
+      "slug": "somayeh-saeedi",
+      "course": "aitoolbox",
+      "nameFa": "سمیه سعیدی",
+      "nameEn": "Somayeh Saeedi",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Somayeh_Saeedi.jpg"
+    },
+    {
+      "slug": "zohreh-behrang",
+      "course": "aitoolbox",
+      "nameFa": "زهره بهرنگ",
+      "nameEn": "Zohreh Behrang",
+      "salutation": "سرکار خانم",
+      "issuedOn": "2025-03-08",
+      "issuedOnFa": "18 اسفند 1403",
+      "photo": "/images/2025/03/Zohreh_Behrang.jpg"
+    }
+  ]
+}
