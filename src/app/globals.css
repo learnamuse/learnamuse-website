@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+/* `dark:` follows the OS preference unless <html data-theme> overrides it (same rule as the tokens). */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *) {
+      @slot;
+    }
+  }
+}
+
 /*
  * Learnamuse design tokens.
  * Brand green sampled from the logo (#7FD141). Gold comes from the certificate badge.
@@ -83,6 +95,21 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem; /* keep anchored targets clear of the sticky header */
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 body {
@@ -92,8 +119,96 @@ body {
   font-feature-settings: "ss01"; /* Vazirmatn: Persian digits stay Persian */
 }
 
+::selection {
+  background: var(--brand);
+  color: var(--brand-ink);
+}
+
+/* Visible, consistent focus ring everywhere (keyboard only). */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--brand-strong);
+  outline-offset: 3px;
+  border-radius: 0.5rem;
+}
+
+/* ---------------------------------------------------------------------------
+ * Motif: the logo's rounded diamond + dot, used as a quiet lattice texture.
+ * Implemented as a mask so it follows the theme colour (light + dark).
+ * ------------------------------------------------------------------------- */
+.motif-lattice {
+  background-color: var(--brand);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M18.6 13.4Q20 12 21.4 13.4L26.6 18.6Q28 20 26.6 21.4L21.4 26.6Q20 28 18.6 26.6L13.4 21.4Q12 20 13.4 18.6Z' fill='none' stroke='black' stroke-width='1.2'/%3E%3Ccircle cx='20' cy='20' r='1.6'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at center, black 0%, transparent 70%);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M18.6 13.4Q20 12 21.4 13.4L26.6 18.6Q28 20 26.6 21.4L21.4 26.6Q20 28 18.6 26.6L13.4 21.4Q12 20 13.4 18.6Z' fill='none' stroke='black' stroke-width='1.2'/%3E%3Ccircle cx='20' cy='20' r='1.6'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at center, black 0%, transparent 70%);
+  -webkit-mask-size: 40px 40px, 100% 100%;
+  mask-size: 40px 40px, 100% 100%;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  pointer-events: none;
+}
+
+/* Certificate paper: always a light "sheet", even in dark mode (tokens re-scoped locally). */
+.cert-paper {
+  --surface: #fffefa;
+  --surface-2: #f6f7f0;
+  --ink: #14180f;
+  --ink-2: #4a5242;
+  --ink-3: #6b7362;
+  --line: #e3e7da;
+  --brand: #7fd141;
+  --brand-strong: #4f9a1c;
+  --gold: #e2a530;
+  color: var(--ink);
+  background-color: var(--surface);
+  background-image:
+    radial-gradient(circle at 0 0, color-mix(in oklab, var(--brand) 10%, transparent) 0 12rem, transparent 12rem),
+    radial-gradient(circle at 100% 100%, color-mix(in oklab, var(--gold) 14%, transparent) 0 10rem, transparent 10rem);
+}
+
+/* ---------------------------------------------------------------------------
+ * Print: only the certificate document, on one A4 landscape page.
+ * ------------------------------------------------------------------------- */
+@page certificate {
+  size: A4 landscape;
+  margin: 0;
+}
+
 @media print {
+  :root,
+  :root[data-theme="dark"],
+  :root:not([data-theme="light"]) {
+    --brand: #7fd141;
+    --brand-strong: #4f9a1c;
+    --brand-soft: #eef8e4;
+    --brand-ink: #1f3d0a;
+    --gold: #f2b544;
+    --gold-soft: #fdf3dc;
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #f3f5ee;
+    --ink: #14180f;
+    --ink-2: #4a5242;
+    --ink-3: #7a8270;
+    --line: #e3e7da;
+    --shadow: none;
+  }
+  html,
   body {
     background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* Everything outside the certificate is marked print:hidden; the document fills the sheet. */
+  .print-area {
+    width: 297mm !important;
+    height: 209mm !important; /* 1mm slack avoids a blank 2nd page from rounding */
+    max-width: none !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden;
+    break-inside: avoid;
+    page: certificate;
   }
 }

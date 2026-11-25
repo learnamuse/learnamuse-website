@@ -1,0 +1,31 @@
+{
+  "$comment": "Routes that have been published and must keep working (printed/shared certificate links). validate-content fails if any of these disappear. Updated by cert:add and `npm run validate -- --update-routes`.",
+  "routes": [
+    "/",
+    "/about-us/",
+    "/certificates/",
+    "/certificates/aitoolbox/",
+    "/certificates/aitoolbox/elham-ghasedi/",
+    "/certificates/aitoolbox/fatemeh-amanifar/",
+    "/certificates/aitoolbox/fatemeh-yousefi/",
+    "/certificates/aitoolbox/mahnaz-karbasi/",
+    "/certificates/aitoolbox/maliheh-nourizadeh/",
+    "/certificates/aitoolbox/marziyeh-paktinat/",
+    "/certificates/aitoolbox/masoumeh-alimardani/",
+    "/certificates/aitoolbox/mehri-zarrabadi-pour/",
+    "/certificates/aitoolbox/mojgan-hemmati/",
+    "/certificates/aitoolbox/monireh-rahimdadi/",
+    "/certificates/aitoolbox/nastaran-mohammadi/",
+    "/certificates/aitoolbox/nazanin-hariri/",
+    "/certificates/aitoolbox/negar-jalilvand/",
+    "/certificates/aitoolbox/roya-hossein-abadi-rayat/",
+    "/certificates/aitoolbox/samaneh-gharaei/",
+    "/certificates/aitoolbox/sanaz-saberian/",
+    "/certificates/aitoolbox/sara-rahimi/",
+    "/certificates/aitoolbox/setareh-bahrampour/",
+    "/certificates/aitoolbox/setareh-khodabakhsh/",
+    "/certificates/aitoolbox/somayeh-saeedi/",
+    "/certificates/aitoolbox/zohreh-behrang/",
+    "/contact-us/"
+  ]
+}
