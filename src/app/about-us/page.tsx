@@ -7,7 +7,7 @@ import { absoluteUrl } from "@/lib/url";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Diamond } from "@/components/ui/Diamond";
 import { container, btnPrimary, btnSecondary } from "@/components/ui/styles";
-import { faNumber } from "@/components/ui/format";
+import { NumberBadge } from "@/components/ui/NumberBadge";
 import { Bolt, HandHeart, Inclusive, ArrowForward } from "@/components/ui/icons";
 import { Reveal, Stagger } from "@/components/motion/Reveal";
 
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
 
 /** Each value gets its own icon and accent so the three cards read as distinct ideas. */
 const VALUE_STYLES = [
-  { icon: Bolt, accent: "text-brand", tint: "bg-brand-soft", bar: "bg-brand" },
-  { icon: HandHeart, accent: "text-gold", tint: "bg-gold-soft", bar: "bg-gold" },
-  { icon: Inclusive, accent: "text-brand-strong", tint: "bg-surface-2", bar: "bg-brand-strong" },
-];
+  { icon: Bolt, accent: "text-brand", tint: "bg-brand-soft", bar: "bg-brand", badge: "brand" },
+  { icon: HandHeart, accent: "text-gold", tint: "bg-gold-soft", bar: "bg-gold", badge: "gold" },
+  { icon: Inclusive, accent: "text-brand-strong", tint: "bg-surface-2", bar: "bg-brand-strong", badge: "outline" },
+] as const;
 
 export default function AboutPage() {
   return (
@@ -58,9 +58,7 @@ export default function AboutPage() {
                     <span className={`inline-flex size-14 items-center justify-center rounded-2xl ${s.tint}`}>
                       <s.icon className={`size-7 ${s.accent === "text-gold" ? "text-ink" : "text-brand-strong"}`} />
                     </span>
-                    <span className="text-5xl font-black text-line" aria-hidden="true">
-                      {faNumber(i + 1)}
-                    </span>
+                    <NumberBadge value={i + 1} variant={s.badge} />
                   </div>
                   <h3 className="mt-6 text-xl font-black text-ink sm:text-2xl">{v.title}</h3>
                   <p className="mt-3 leading-8 text-ink-2">{v.body}</p>

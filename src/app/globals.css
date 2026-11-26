@@ -112,6 +112,91 @@ body {
   pointer-events: none;
 }
 
+/* ---------------------------------------------------------------------------
+ * Number badge (<NumberBadge/>): the rounded diamond as a solid tile, numeral upright.
+ * The tile is a rounded square turned 45°. Its size is chosen so the turned square's
+ * rounded corners just touch the box (side 76% of the box, corner radius 22%).
+ * In the components layer so utilities can override the variables, e.g.
+ * `sm:[--nb-size:3.5rem] sm:[--nb-font:1.5rem]` for a responsive size.
+ * ------------------------------------------------------------------------- */
+@layer components {
+  .num-badge {
+    --nb-size: 2.75rem;
+    --nb-font: 1.1875rem;
+    --nb-fill: var(--brand);
+    --nb-hi: #a2e06f; /* top highlight, still >= 7:1 against the numeral */
+    --nb-ink: var(--brand-ink);
+    --nb-ring: rgb(255 255 255 / 0.5);
+    --nb-edge: transparent;
+    --nb-shadow: rgb(64 124 23 / 0.32);
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    inline-size: var(--nb-size);
+    block-size: var(--nb-size);
+    user-select: none;
+  }
+  .num-badge[data-size="sm"] {
+    --nb-size: 2rem;
+    --nb-font: 0.9375rem;
+  }
+  .num-badge[data-size="sm"] .num-badge-tile {
+    outline: none; /* the inner outline is too busy at 32px */
+  }
+  .num-badge[data-size="lg"] {
+    --nb-size: 3.5rem;
+    --nb-font: 1.5rem;
+  }
+  .num-badge[data-variant="soft"] {
+    --nb-fill: var(--brand-soft);
+    --nb-hi: var(--brand-soft);
+    --nb-ink: var(--brand-strong);
+    --nb-ring: transparent;
+    --nb-edge: color-mix(in oklab, var(--brand) 70%, transparent);
+    --nb-shadow: transparent;
+  }
+  .num-badge[data-variant="gold"] {
+    --nb-fill: var(--gold);
+    --nb-hi: #f8cf7c;
+    --nb-ink: var(--ink);
+    --nb-ring: rgb(255 255 255 / 0.55);
+    --nb-shadow: rgb(150 100 10 / 0.3);
+  }
+  .num-badge[data-variant="outline"] {
+    --nb-fill: var(--surface);
+    --nb-hi: var(--surface);
+    --nb-ink: var(--brand-strong);
+    --nb-ring: transparent;
+    --nb-edge: var(--brand);
+    --nb-shadow: rgb(20 24 15 / 0.12);
+  }
+  .num-badge-tile {
+    position: absolute;
+    inset: 12%;
+    border-radius: 22%;
+    rotate: 45deg;
+    /* "to bottom right" on the turned tile reads as top -> bottom on screen. */
+    background: linear-gradient(to bottom right, var(--nb-hi), var(--nb-fill) 60%);
+    /* Local (x, y) offsets are rotated 45° too: 2px 2px lands straight below the tile. */
+    box-shadow:
+      inset 0 0 0 1.5px var(--nb-edge),
+      2px 2px 6px -1px var(--nb-shadow);
+    outline: 1px solid var(--nb-ring);
+    outline-offset: calc(var(--nb-size) * -0.09);
+  }
+  .num-badge-digit {
+    position: relative;
+    font-size: var(--nb-font);
+    font-weight: 900;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    color: var(--nb-ink);
+    /* Vazirmatn's Persian digits sit high in the line box; drop them to the optical centre. */
+    translate: 0 0.06em;
+  }
+}
+
 /* Certificate paper: a warm off-white "sheet" (tokens re-scoped locally). */
 .cert-paper {
   --surface: #fffefa;
@@ -156,6 +241,9 @@ body {
     --shadow: none;
     --lift: none;
     --lift-brand: none;
+  }
+  .num-badge {
+    --nb-shadow: transparent;
   }
   html,
   body {

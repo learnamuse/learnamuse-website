@@ -7,6 +7,7 @@ import { absoluteUrl } from "@/lib/url";
 import { container, btnPrimary, btnSecondary, eyebrow, cardLift } from "@/components/ui/styles";
 import { Diamond, DiamondRule } from "@/components/ui/Diamond";
 import { faDigits, faNumber } from "@/components/ui/format";
+import { NumberBadge } from "@/components/ui/NumberBadge";
 import { ArrowForward, ShieldCheck, Users, Sparkles, Clock, School } from "@/components/ui/icons";
 import { VerifyForm } from "@/components/certificates/VerifyForm";
 import { Bear } from "@/components/bot/Bear";
@@ -31,8 +32,6 @@ const IMAGE_DIMS: Record<string, [number, number]> = {
   "/images/2025/01/3535.jpg": [1024, 1024],
   "/images/2025/01/werwer.jpg": [1024, 1024],
 };
-
-const FEATURE_ACCENTS = ["text-brand", "text-gold", "text-brand-strong"];
 
 export default function Home() {
   const { hero, features } = pages.home;
@@ -178,15 +177,10 @@ export default function Home() {
                   )}
                 </Reveal>
                 <Reveal variant={i % 2 === 1 ? "start" : "end"} delay={120}>
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={`relative inline-flex size-12 items-center justify-center ${FEATURE_ACCENTS[i % 3]}`}
-                      aria-hidden="true"
-                    >
-                      <Diamond className="absolute inset-0 size-12 opacity-20" />
-                      <span className="relative text-lg font-black text-ink">{faNumber(i + 1)}</span>
-                    </span>
-                    <span className="h-px flex-1 bg-line" aria-hidden="true" />
+                  <div className="flex items-center gap-4" aria-hidden="true">
+                    <NumberBadge value={i + 1} size="lg" />
+                    {/* RTL: the rule starts at the badge (right) and fades out to the left. */}
+                    <span className="h-0.5 flex-1 rounded-full bg-linear-to-l from-brand/60 via-line to-transparent" />
                   </div>
                   <h3 className="mt-5 text-2xl font-black text-ink sm:text-3xl">{f.title}</h3>
                   <p className="mt-4 text-base leading-8 text-ink-2 sm:text-lg sm:leading-9">{f.body}</p>

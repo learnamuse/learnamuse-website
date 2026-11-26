@@ -218,6 +218,16 @@
   }
 }
 
+/* Number badges: the diamond tile swells a touch when its card is hovered; the numeral stays put. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .num-badge-tile {
+    transition: scale 0.45s var(--ease-spring);
+  }
+  .group:hover .num-badge-tile {
+    scale: 1.08;
+  }
+}
+
 /* Desktop nav: underline that grows from the centre on hover (the active item has a pill). */
 .nav-link::after {
   content: "";

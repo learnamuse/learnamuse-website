@@ -5,7 +5,7 @@ import { ogBase } from "@/lib/seo";
 import { absoluteUrl, asset } from "@/lib/url";
 import { container, btnPrimary, btnSecondary, eyebrow as eyebrowCls } from "@/components/ui/styles";
 import { Diamond, DiamondRule } from "@/components/ui/Diamond";
-import { faNumber } from "@/components/ui/format";
+import { NumberBadge } from "@/components/ui/NumberBadge";
 import { ArrowForward, Check, External, ShieldCheck, School } from "@/components/ui/icons";
 import { Bear } from "@/components/bot/Bear";
 import { ChatDemo } from "@/components/bot/ChatDemo";
@@ -159,21 +159,23 @@ export default function BaleBotPage() {
         <div className={container}>
           <SectionHead id="how-title" eyebrow={steps.eyebrow} title={steps.title} lead={steps.lead} />
           <ol className="relative mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5 lg:gap-4">
-            {/* connecting line on wide screens */}
+            {/* Connector through the badge centres, visible in the gaps between cards. Phones: a
+                vertical line down the badge column (inline-start); desktop: a horizontal line. */}
             <span
               aria-hidden="true"
-              className="absolute inset-x-[10%] top-7 hidden h-0.5 bg-linear-to-l from-brand/0 via-brand/50 to-brand/0 lg:block"
+              className="absolute inset-y-10 start-[2.625rem] w-0.5 rounded-full bg-brand/45 sm:hidden"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-[10%] top-[3.25rem] hidden h-0.5 rounded-full bg-brand/45 lg:block"
             />
             {steps.items.map((s, i) => (
               <li key={s.title} className={i === steps.items.length - 1 ? "sm:col-span-2 lg:col-span-1" : undefined}>
                 <Reveal
                   delay={i * 90}
-                  className="relative flex h-full items-start gap-4 rounded-card border border-line bg-surface p-5 shadow-card sm:flex-col sm:items-center sm:p-6 sm:text-center"
+                  className="group relative flex h-full items-start gap-4 rounded-card border border-line bg-surface p-5 shadow-card sm:flex-col sm:items-center sm:p-6 sm:text-center"
                 >
-                  <span className="relative flex size-12 shrink-0 items-center justify-center sm:size-14">
-                    <Diamond className="absolute inset-0 size-full text-brand" />
-                    <span className="relative text-lg font-black text-brand-ink">{faNumber(i + 1)}</span>
-                  </span>
+                  <NumberBadge value={i + 1} size="md" className="sm:[--nb-font:1.5rem] sm:[--nb-size:3.5rem]" />
                   <div>
                     <h3 className="text-lg font-black text-ink">{s.title}</h3>
                     <p className="mt-1.5 text-[0.95rem] leading-7 text-ink-2 sm:mt-2">{s.body}</p>
@@ -288,13 +290,11 @@ export default function BaleBotPage() {
                 <li key={m.title}>
                   <Reveal
                     delay={i * 80}
-                    className="relative h-full overflow-hidden rounded-card border border-line bg-surface p-6 shadow-card"
+                    className="group relative h-full overflow-hidden rounded-card border border-line bg-surface p-6 shadow-card"
                   >
                     <span className="absolute inset-x-0 top-0 h-1 bg-linear-to-l from-brand to-gold" aria-hidden="true" />
-                    <span className="text-4xl font-black text-brand/35" aria-hidden="true">
-                      {faNumber(i + 1)}
-                    </span>
-                    <h3 className="mt-2 text-lg font-black text-ink">{m.title}</h3>
+                    <NumberBadge value={i + 1} variant="soft" />
+                    <h3 className="mt-3 text-lg font-black text-ink">{m.title}</h3>
                     <p className="mt-2 leading-7 text-ink-2">{m.body}</p>
                   </Reveal>
                 </li>
