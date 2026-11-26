@@ -9,6 +9,8 @@ import { Diamond, DiamondRule } from "@/components/ui/Diamond";
 import { faDigits, faNumber } from "@/components/ui/format";
 import { ArrowForward, ShieldCheck, Users, Sparkles, Clock, School } from "@/components/ui/icons";
 import { VerifyForm } from "@/components/certificates/VerifyForm";
+import { Bear } from "@/components/bot/Bear";
+import { BaleIcon } from "@/components/contact/BaleIcon";
 
 export const metadata: Metadata = {
   alternates: { canonical: absoluteUrl("/") },
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
     url: absoluteUrl("/"),
     title: `${site.name} | ${site.nameEn}`,
     description: site.tagline,
-    images: [{ url: absoluteUrl(pages.home.hero.image), width: 1024, height: 1024 }],
+    images: [{ url: absoluteUrl(pages.home.hero.image), width: 1920, height: 1282 }],
   },
 };
 
@@ -38,66 +40,98 @@ export default function Home() {
   return (
     <>
       {/* ---------------------------------------------------------------- Hero */}
-      <section aria-labelledby="hero-title" className="relative overflow-hidden">
-        <div className="motif-lattice absolute inset-0 opacity-25" aria-hidden="true" />
-        <div className={`${container} relative grid items-center gap-12 py-14 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-24`}>
-          <div>
-            <p className={eyebrow}>
-              <Diamond className="size-3.5 text-brand" />
-              {site.name}
-              <span aria-hidden="true" className="text-ink-3">·</span>
-              <span lang="en" dir="ltr" className="font-semibold">
-                {site.nameEn}
-              </span>
-            </p>
-            <h1
-              id="hero-title"
-              className="mt-5 text-4xl font-black leading-[1.25] tracking-tight text-ink sm:text-5xl lg:text-6xl"
-            >
-              {hero.title}
-            </h1>
-            <p className="mt-6 max-w-xl text-base leading-8 text-ink-2 sm:text-lg sm:leading-9">{hero.lead}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact-us/" className={btnPrimary}>
-                با ما در ارتباط باشید
-                <ArrowForward className="size-4" />
-              </Link>
-              <Link href="/certificates/" className={btnSecondary}>
-                <ShieldCheck className="size-5 text-brand-strong" />
-                استعلام گواهی
-              </Link>
-            </div>
-          </div>
+      {/*
+       * Full-bleed photo from the old site: notebook + pen (top left) and a plant (top right)
+       * on a white desk. The objects fill the top of the frame; the copy sits on the white
+       * lower area, as on learnamuse.com. On phones the frame is zoomed toward its right half
+       * so the notebook spiral and the plant stay large, with the text below them.
+       */}
+      <section aria-labelledby="hero-title" className="relative isolate overflow-hidden bg-white">
+        <div
+          aria-hidden="true"
+          className="absolute top-0 -z-10 aspect-[1920/1282] w-[175%] left-[-72%] sm:w-[130%] sm:left-[-30%] lg:inset-x-0 lg:w-full lg:-top-[3vw]"
+        >
+          <Image src={hero.image} alt="" fill preload sizes="(min-width: 1024px) 100vw, 175vw" className="object-cover" />
+          {/* blend the photo's lower edge into the page white */}
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-b from-white/0 to-white" />
+        </div>
+        {/* soft white halo behind the copy so it reads cleanly over any part of the photo */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 -z-10 h-[62%] bg-[radial-gradient(ellipse_60%_70%_at_50%_60%,white_40%,rgb(255_255_255/0)_100%)]"
+        />
 
-          <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-            {/* rotated "logo diamond" backdrop */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-6 rotate-45 rounded-[3rem] bg-brand-soft ring-1 ring-brand/20 sm:inset-10"
-            />
-            <div className="relative overflow-hidden rounded-[2rem] border border-line bg-surface p-2 shadow-card">
-              <Image
-                src={hero.image}
-                alt="میز کاری با کتاب، لپ‌تاپ و یادداشت‌ها؛ تصویری از آموزش مبتنی بر شواهد"
-                width={1024}
-                height={1024}
-                sizes="(min-width: 1024px) 40vw, (min-width: 640px) 28rem, 90vw"
-                preload
-                className="aspect-square w-full rounded-[1.6rem] object-cover"
-              />
+        <div
+          className={`${container} flex flex-col items-center pb-6 pt-[56vw] text-center sm:pb-8 sm:pt-[36vw] lg:pb-10 lg:pt-[min(27vw,34rem)]`}
+        >
+          <p className={`${eyebrow} ring-1 ring-brand/20`}>
+            <Diamond className="size-3.5 text-brand" />
+            {site.name}
+            <span aria-hidden="true" className="text-ink-3">
+              ·
+            </span>
+            <span lang="en" dir="ltr" className="font-semibold">
+              {site.nameEn}
+            </span>
+          </p>
+          <h1
+            id="hero-title"
+            className="mt-5 text-4xl font-black leading-[1.25] tracking-tight text-brand-strong sm:text-5xl lg:text-6xl"
+          >
+            {hero.title}
+          </h1>
+          <DiamondRule className="mt-5" />
+          <p className="mt-5 max-w-2xl text-base leading-8 text-ink-2 sm:text-lg sm:leading-9">{hero.lead}</p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link href="/contact-us/" className={btnPrimary}>
+              با ما در ارتباط باشید
+              <ArrowForward className="size-4" />
+            </Link>
+            <Link href="/certificates/" className={btnSecondary}>
+              <ShieldCheck className="size-5 text-brand-strong" />
+              استعلام گواهی
+            </Link>
+          </div>
+          {course && (
+            <Link
+              href={courseRoute(course.slug)}
+              className="mt-10 inline-flex items-center gap-3 rounded-2xl border border-line bg-white p-2.5 pe-5 text-start shadow-card transition-colors hover:border-brand"
+            >
+              <Image src={course.badge} alt="" width={250} height={250} sizes="48px" className="size-11" />
+              <span className="text-sm leading-6">
+                <span className="block font-black text-ink">{faNumber(graduates.length)} گواهی صادرشده</span>
+                <span className="block text-ink-2">کارگاه جعبه‌ابزار هوش‌مصنوعی</span>
+              </span>
+            </Link>
+          )}
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------ Bale bot band */}
+      <section aria-labelledby="bot-band-title" className="pt-4 sm:pt-8">
+        <div className={container}>
+          <div className="relative grid grid-cols-1 items-center gap-6 overflow-hidden rounded-[2rem] bg-brand-soft p-6 ring-1 ring-brand/25 sm:p-10 md:grid-cols-[1fr_auto]">
+            <div>
+              <p className={eyebrow}>ربات لرناموز در بله</p>
+              <h2 id="bot-band-title" className="mt-3 text-2xl font-black leading-tight text-ink sm:text-3xl">
+                ثبت‌نام، کلاس، پرداخت و تکلیف؛ همه در یک گفتگو
+              </h2>
+              <p className="mt-3 max-w-xl leading-8 text-ink-2">
+                بدون نصب برنامهٔ جدید، از داخل پیام‌رسان بله کلاس بگیرید، برنامه‌تان را ببینید و گواهی پایان دوره دریافت کنید.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a href={site.contact.bale} target="_blank" rel="noopener noreferrer" className={btnPrimary}>
+                  <BaleIcon className="size-5" />
+                  شروع گفتگو با ربات
+                  <span className="sr-only">(در پنجرهٔ جدید باز می‌شود)</span>
+                </a>
+                <Link href="/bale-bot/" className={btnSecondary}>
+                  بیشتر بدانید
+                  <ArrowForward className="size-4" />
+                </Link>
+              </div>
             </div>
-            {course && (
-              <Link
-                href={courseRoute(course.slug)}
-                className="absolute -bottom-6 start-2 flex items-center gap-3 rounded-2xl border border-line bg-surface/95 p-3 pe-5 shadow-card backdrop-blur transition-transform hover:-translate-y-0.5 sm:start-[-1.5rem]"
-              >
-                <Image src={course.badge} alt="" width={250} height={250} sizes="48px" className="size-12" />
-                <span className="text-sm leading-6">
-                  <span className="block font-black text-ink">{faNumber(graduates.length)} گواهی صادرشده</span>
-                  <span className="block text-ink-2">کارگاه جعبه‌ابزار هوش‌مصنوعی</span>
-                </span>
-              </Link>
-            )}
+            <Bear pose="point" sizes="(min-width: 768px) 200px, 160px" className="mx-auto w-40 md:w-52" decorative />
           </div>
         </div>
       </section>
@@ -156,24 +190,25 @@ export default function Home() {
       {course && (
         <section aria-labelledby="toolbox-title" className="py-4 sm:py-8">
           <div className={container}>
-            <div className="relative overflow-hidden rounded-[2rem] bg-brand-ink px-6 py-12 text-white ring-1 ring-white/10 sm:px-12 sm:py-16">
-              <Diamond className="pointer-events-none absolute -bottom-10 start-1/3 size-28 text-gold opacity-15" />
+            <div className="relative overflow-hidden rounded-[2rem] bg-brand-soft px-6 py-12 ring-1 ring-brand/25 sm:px-12 sm:py-16">
+              <div className="motif-lattice absolute inset-0 opacity-25" aria-hidden="true" />
+              <Diamond className="pointer-events-none absolute -bottom-10 start-1/3 size-28 text-gold opacity-25" />
               <div className="relative grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
                 <div>
-                  <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-sm font-bold text-brand">
+                  <p className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-sm font-bold text-brand-strong ring-1 ring-brand/25">
                     <Sparkles className="size-4" />
                     کارگاه برگزارشده
                   </p>
-                  <h2 id="toolbox-title" className="mt-5 text-3xl font-black leading-tight sm:text-4xl">
+                  <h2 id="toolbox-title" className="mt-5 text-3xl font-black leading-tight text-ink sm:text-4xl">
                     {course.titleFa}
                   </h2>
-                  <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-white/80">
-                    <School className="size-5 shrink-0 text-brand" />
+                  <p className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 text-ink-2">
+                    <School className="size-5 shrink-0 text-brand-strong" />
                     {course.partnerLabel}
                     <span aria-hidden="true">·</span>
                     {faDigits(course.heldOnFa)}
                   </p>
-                  <p className="mt-6 max-w-xl leading-8 text-white/85">
+                  <p className="mt-6 max-w-xl leading-8 text-ink-2">
                     یک کارگاه عملی برای آموزگاران: آشنایی و کار با ابزارهای هوش مصنوعی برای ساختن محتوای آموزشی تعاملی
                     و بهتر کردن روش‌های تدریس.
                   </p>
@@ -184,12 +219,12 @@ export default function Home() {
                       { icon: Sparkles, value: faNumber(course.tools.length), label: "ابزار هوش مصنوعی" },
                       { icon: Clock, value: faNumber(course.durationHours), label: "ساعت آموزش" },
                     ].map((s) => (
-                      <div key={s.label} className="rounded-2xl bg-white/[0.07] p-3 text-center ring-1 ring-white/10 sm:p-4">
+                      <div key={s.label} className="rounded-2xl bg-white p-3 text-center shadow-card ring-1 ring-brand/15 sm:p-4">
                         <dt className="sr-only">{s.label}</dt>
                         <dd>
-                          <s.icon className="mx-auto size-5 text-brand" />
-                          <span className="mt-2 block text-3xl font-black">{s.value}</span>
-                          <span className="mt-1 block text-xs text-white/75 sm:text-sm" aria-hidden="true">
+                          <s.icon className="mx-auto size-5 text-brand-strong" />
+                          <span className="mt-2 block text-3xl font-black text-ink">{s.value}</span>
+                          <span className="mt-1 block text-xs text-ink-2 sm:text-sm" aria-hidden="true">
                             {s.label}
                           </span>
                         </dd>
@@ -199,7 +234,7 @@ export default function Home() {
 
                   <Link
                     href={courseRoute(course.slug)}
-                    className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3 font-bold text-brand-ink transition-colors hover:bg-white"
+                    className={`${btnPrimary} mt-8`}
                   >
                     دانش‌آموختگان و گواهی‌ها
                     <ArrowForward className="size-4" />
@@ -207,17 +242,17 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <h3 className="mb-4 text-sm font-bold text-white/75">ابزارهایی که با آن‌ها کار کردیم</h3>
+                  <h3 className="mb-4 text-sm font-bold text-ink-2">ابزارهایی که با آن‌ها کار کردیم</h3>
                   <ul className="grid grid-cols-4 gap-2 sm:gap-3">
                     {course.tools.map((t) => (
                       <li
                         key={t.name}
-                        className="flex flex-col items-center gap-2 rounded-2xl bg-white/[0.06] px-1 py-2.5 text-center ring-1 ring-white/10 sm:p-3"
+                        className="flex flex-col items-center gap-2 rounded-2xl bg-white px-1 py-2.5 text-center ring-1 ring-brand/15 sm:p-3"
                       >
-                        <span className="flex size-11 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5 sm:size-12">
+                        <span className="flex size-11 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5 ring-1 ring-line sm:size-12">
                           <Image src={t.logo} alt="" width={64} height={64} sizes="48px" className="size-full object-contain" />
                         </span>
-                        <span lang="en" dir="ltr" className="text-[0.7rem] leading-tight break-words text-white/85 sm:text-xs">
+                        <span lang="en" dir="ltr" className="text-[0.7rem] leading-tight break-words text-ink-2 sm:text-xs">
                           {t.name}
                         </span>
                       </li>

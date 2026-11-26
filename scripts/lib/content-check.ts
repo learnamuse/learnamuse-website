@@ -22,7 +22,7 @@ export type CheckResult = {
   routes: string[];
 };
 
-export const STATIC_ROUTES = ["/", "/about-us/", "/contact-us/", "/certificates/"];
+export const STATIC_ROUTES = ["/", "/about-us/", "/contact-us/", "/certificates/", "/bale-bot/"];
 export const ROUTES_LOCK = "scripts/published-routes.json";
 const IMAGE_LITERAL = /["'`](\/images\/[^"'`\s$]+?\.(?:png|jpe?g|webp|svg|gif))["'`]/gi;
 

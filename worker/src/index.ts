@@ -1,5 +1,6 @@
 /**
  * Learnamuse contact form backend (Cloudflare Worker).
+ * Delivers each message to the Learnamuse Bale bot's admin chat (primary) and, optionally, Telegram.
  *
  *   POST /contact   JSON { name, phone, message?, wantsCollaboration, turnstileToken?, website? }
  *   GET  /health    { ok: true }
@@ -27,7 +28,7 @@ export const ERRORS = {
   tooLarge: "حجم پیام بیش از حد مجاز است.",
   rateLimited: "تعداد درخواست‌ها بیش از حد مجاز است. لطفاً چند دقیقه دیگر دوباره تلاش کنید.",
   turnstile: "تأیید امنیتی انجام نشد. لطفاً صفحه را تازه کنید و دوباره تلاش کنید.",
-  unavailable: "ارسال پیام در حال حاضر ممکن نیست. لطفاً از راه تلگرام یا ایمیل با ما در ارتباط باشید.",
+  unavailable: "ارسال پیام در حال حاضر ممکن نیست. لطفاً از راه ربات لرناموز در بله (@LearnamuseBot) یا تلگرام با ما در ارتباط باشید.",
 } as const;
 
 type Result = { ok: true } | { ok: false; error: string; fieldErrors?: FieldErrors };
@@ -143,21 +144,63 @@ export function escapeHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-function formatTehranTime(date: Date): string {
+/** Jalali (Solar Hijri) date + time in Asia/Tehran, e.g. «چهارشنبه ۵ آذر ۱۴۰۵، ساعت ۱۴:۳۰». */
+export function formatTehranTime(date: Date): string {
   try {
-    return new Intl.DateTimeFormat("fa-IR", { timeZone: "Asia/Tehran", dateStyle: "full", timeStyle: "short" }).format(date);
+    const parts = new Intl.DateTimeFormat("fa-IR-u-ca-persian-nu-arabext", {
+      timeZone: "Asia/Tehran",
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).formatToParts(date);
+    const part = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
+    // Assemble explicitly: the default fa-IR pattern ("۱۴۰۵ آذر ۵, پنجشنبه") reads poorly.
+    const d = `${part("weekday")} ${part("day")} ${part("month")} ${part("year")}`;
+    const t = new Intl.DateTimeFormat("fa-IR-u-nu-arabext", {
+      timeZone: "Asia/Tehran",
+      hour: "2-digit",
+      minute: "2-digit",
+      hourCycle: "h23",
+    }).format(date);
+    return `${d}، ساعت ${t}`;
   } catch {
     return date.toISOString();
   }
 }
 
+const MESSAGE_TITLE = "📩 پیام جدید از وب‌سایت لرناموز";
+
+/**
+ * Plain-text admin notification (used for Bale). Bale's admin notices from the bot are sent
+ * without parse_mode too, so nothing needs escaping and no user input can inject markup.
+ * The phone is a bare 09xxxxxxxxx so admins can tap/copy it to call.
+ */
+export function formatPlainMessage(c: NormalizedContact, receivedAt: Date, origin: string | null): string {
+  const lines = [
+    MESSAGE_TITLE,
+    "",
+    `👤 نام: ${c.name}`,
+    `📱 موبایل: ${c.phone}`,
+    `🤝 تمایل به همکاری آموزشی: ${c.wantsCollaboration ? "بله ✅" : "خیر"}`,
+    "",
+    "💬 پیام:",
+    c.message || "(بدون متن — فقط درخواست تماس)",
+    "",
+    `🕒 زمان: ${formatTehranTime(receivedAt)}`,
+    `🌐 صفحه: ${origin ? `${origin} › ارتباط با ما` : "ارتباط با ما"}`,
+  ];
+  return lines.join("\n");
+}
+
+/** HTML variant for Telegram (parse_mode HTML; all user input escaped). */
 export function formatTelegramMessage(c: NormalizedContact, receivedAt: Date, origin: string | null): string {
   const lines = [
-    "📩 <b>پیام تازه از فرم تماس لرناموز</b>",
+    `<b>${escapeHtml(MESSAGE_TITLE)}</b>`,
     "",
     `👤 <b>نام:</b> ${escapeHtml(c.name)}`,
     `📱 <b>موبایل:</b> <code>${escapeHtml(c.phone)}</code>`,
-    `🤝 <b>تمایل به همکاری:</b> ${c.wantsCollaboration ? "بله" : "خیر"}`,
+    `🤝 <b>تمایل به همکاری آموزشی:</b> ${c.wantsCollaboration ? "بله ✅" : "خیر"}`,
   ];
   if (c.message) lines.push("", "💬 <b>پیام:</b>", escapeHtml(c.message));
   lines.push("", `🕒 ${escapeHtml(formatTehranTime(receivedAt))}`);
@@ -165,23 +208,56 @@ export function formatTelegramMessage(c: NormalizedContact, receivedAt: Date, or
   return lines.join("\n");
 }
 
-async function sendTelegram(env: Env, text: string): Promise<boolean> {
-  if (!env.TELEGRAM_BOT_TOKEN || !env.TELEGRAM_CHAT_ID) return false;
+const DELIVERY_TIMEOUT_MS = 10_000;
+
+/** POST a Bot API sendMessage call (Bale and Telegram share the same shape). Never throws. */
+async function botSendMessage(base: string, token: string, payload: Record<string, unknown>): Promise<boolean> {
   try {
-    const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    const res = await fetch(`${base.replace(/\/$/, "")}/bot${token}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        chat_id: env.TELEGRAM_CHAT_ID,
-        text,
-        parse_mode: "HTML",
-        link_preview_options: { is_disabled: true },
-      }),
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(DELIVERY_TIMEOUT_MS),
     });
-    return res.ok;
+    if (!res.ok) return false;
+    // Bot APIs answer {"ok":true,"result":{…}}; treat an explicit ok:false as a failure.
+    const data = (await res.json().catch(() => null)) as { ok?: unknown } | null;
+    return !data || data.ok !== false;
   } catch {
     return false;
   }
+}
+
+export type Channel = "bale" | "telegram";
+
+export function configuredChannels(env: Env): Channel[] {
+  const list: Channel[] = [];
+  if (env.BALE_BOT_TOKEN && env.BALE_CHAT_ID) list.push("bale");
+  if (env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID) list.push("telegram");
+  return list;
+}
+
+function sendBale(env: Env, c: NormalizedContact, receivedAt: Date, origin: string | null): Promise<boolean> {
+  return botSendMessage(env.BALE_API_BASE || "https://tapi.bale.ai", env.BALE_BOT_TOKEN!, {
+    chat_id: env.BALE_CHAT_ID,
+    text: formatPlainMessage(c, receivedAt, origin),
+  });
+}
+
+function sendTelegram(env: Env, c: NormalizedContact, receivedAt: Date, origin: string | null): Promise<boolean> {
+  return botSendMessage(env.TELEGRAM_API_BASE || "https://api.telegram.org", env.TELEGRAM_BOT_TOKEN!, {
+    chat_id: env.TELEGRAM_CHAT_ID,
+    text: formatTelegramMessage(c, receivedAt, origin),
+    parse_mode: "HTML",
+    link_preview_options: { is_disabled: true },
+  });
+}
+
+/** Send to every configured channel in parallel. Returns how many deliveries succeeded. */
+async function deliver(env: Env, c: NormalizedContact, receivedAt: Date, origin: string | null): Promise<number> {
+  const senders = { bale: sendBale, telegram: sendTelegram };
+  const results = await Promise.all(configuredChannels(env).map((ch) => senders[ch](env, c, receivedAt, origin)));
+  return results.filter(Boolean).length;
 }
 
 /** Optional archive in D1 (binding DB) and/or KV (binding MESSAGES_KV). Returns true if stored anywhere. */
@@ -273,10 +349,12 @@ async function handleContact(request: Request, env: Env, cors: Record<string, st
   }
 
   const receivedAt = new Date();
-  const stored = await archive(env, value, receivedAt, origin);
-  const delivered = await sendTelegram(env, formatTelegramMessage(value, receivedAt, origin));
+  const [stored, delivered] = await Promise.all([
+    archive(env, value, receivedAt, origin),
+    deliver(env, value, receivedAt, origin),
+  ]);
   if (!delivered && !stored) {
-    const configured = Boolean(env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_CHAT_ID);
+    const configured = configuredChannels(env).length > 0;
     log(configured ? "delivery_failed" : "not_configured", configured ? 502 : 503);
     return json({ ok: false, error: ERRORS.unavailable }, configured ? 502 : 503, cors);
   }

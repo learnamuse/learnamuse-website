@@ -9,7 +9,8 @@ import {
   type ContactField,
   type ContactInput,
 } from "@/lib/contact-client";
-import { Check, Telegram, Mail } from "@/components/ui/icons";
+import { Check, Telegram, External } from "@/components/ui/icons";
+import { BaleIcon } from "./BaleIcon";
 
 export type FieldDef = {
   key: "name" | "phone" | "message" | "wantsCollaboration";
@@ -37,18 +38,50 @@ const TURNSTILE_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?ren
 
 const EMPTY = { name: "", phone: "", message: "", wantsCollaboration: false, website: "" };
 
+const NEW_TAB = { target: "_blank", rel: "noopener noreferrer" } as const;
+
+/** Bale (primary) + Telegram buttons, shown when the form can't be used or after sending. */
+function ChannelButtons({ bale, telegram, compact = false }: { bale: string; telegram: string; compact?: boolean }) {
+  const size = compact ? "px-4 py-2 text-sm" : "px-5 py-3 text-sm sm:text-base";
+  return (
+    <div className="flex flex-wrap gap-3">
+      <a
+        href={bale}
+        {...NEW_TAB}
+        className={`inline-flex items-center gap-2 rounded-full bg-brand font-bold text-brand-ink transition-colors hover:bg-brand-strong hover:text-white ${size}`}
+      >
+        <BaleIcon className="size-5" />
+        گفتگو با ربات لرناموز در بله
+        <External className="size-4" />
+        <span className="sr-only">(در پنجرهٔ جدید باز می‌شود)</span>
+      </a>
+      <a
+        href={telegram}
+        {...NEW_TAB}
+        className={`inline-flex items-center gap-2 rounded-full border border-line bg-surface font-bold text-ink transition-colors hover:border-brand hover:bg-brand-soft ${size}`}
+      >
+        <Telegram className="size-5 text-brand-strong" />
+        تلگرام
+        <span className="sr-only">(در پنجرهٔ جدید باز می‌شود)</span>
+      </a>
+    </div>
+  );
+}
+
 export function ContactForm({
   fields,
   submitLabel,
+  bale,
+  baleHandle,
   telegram,
   telegramHandle,
-  email,
 }: {
   fields: FieldDef[];
   submitLabel: string;
+  bale: string;
+  baleHandle: string;
   telegram: string;
   telegramHandle: string;
-  email: string;
 }) {
   const uid = useId();
   const [values, setValues] = useState(EMPTY);
@@ -70,7 +103,7 @@ export function ContactForm({
       widgetId.current = window.turnstile.render(turnstileEl.current, {
         sitekey: TURNSTILE_SITE_KEY,
         language: "fa",
-        theme: "auto",
+        theme: "light",
         callback: (t: string) => setToken(t),
         "expired-callback": () => setToken(""),
         "error-callback": () => setToken(""),
@@ -129,7 +162,7 @@ export function ContactForm({
 
     if (!CONTACT_ENABLED) {
       setStatus("error");
-      setFormError("ارسال آنلاین فرم فعلاً فعال نیست. لطفاً پیام‌تان را از راه تلگرام یا ایمیل برای ما بفرستید.");
+      setFormError("ارسال آنلاین فرم فعلاً فعال نیست. لطفاً پیام‌تان را در ربات لرناموز در بله یا در تلگرام برای ما بفرستید.");
       statusRef.current?.focus();
       return;
     }
@@ -181,12 +214,21 @@ export function ContactForm({
         <span className="inline-flex size-16 items-center justify-center rounded-full bg-brand text-brand-ink">
           <Check className="size-8" />
         </span>
-        <h2 className="mt-5 text-2xl font-black text-ink">پیام‌تون رسید!</h2>
-        <p className="mt-3 max-w-sm leading-8 text-ink-2">ممنون که با ما در ارتباط هستید. به‌زودی جواب‌تون رو می‌دیم.</p>
+        <h2 className="mt-5 text-2xl font-black text-ink">پیام‌تان رسید!</h2>
+        <p className="mt-3 max-w-md leading-8 text-ink-2">
+          ممنون که با ما در ارتباط هستید. همکاران ما پیام شما را بررسی می‌کنند و به‌زودی با شماره‌ای که وارد کردید با شما تماس
+          می‌گیرند.
+        </p>
+        <p className="mt-4 max-w-md text-sm leading-7 text-ink-2">
+          برای پاسخ سریع‌تر و پیگیری کلاس‌ها، به ربات لرناموز در بله (<span dir="ltr">{baleHandle}</span>) سر بزنید.
+        </p>
+        <div className="mt-5 flex justify-center">
+          <ChannelButtons bale={bale} telegram={telegram} compact />
+        </div>
         <button
           type="button"
           onClick={() => setStatus("idle")}
-          className="mt-6 rounded-full border border-line bg-surface px-5 py-2.5 font-bold text-ink hover:border-brand"
+          className="mt-6 rounded-full px-5 py-2.5 font-bold text-brand-strong underline decoration-brand/40 decoration-2 underline-offset-4 hover:decoration-brand"
         >
           ارسال پیام دیگر
         </button>
@@ -198,25 +240,19 @@ export function ContactForm({
   const errId = (k: string) => `${uid}-${k}-error`;
   const inputCls = (invalid: boolean) =>
     `mt-2 block w-full rounded-2xl border bg-surface px-4 py-3 text-base text-ink placeholder:text-ink-3 transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/40 ${
-      invalid ? "border-red-500 dark:border-red-400" : "border-line"
+      invalid ? "border-red-600" : "border-line"
     }`;
 
   return (
     <form ref={formRef} onSubmit={onSubmit} noValidate className="space-y-6" aria-describedby={`${uid}-req`}>
       {!CONTACT_ENABLED && (
-        <div className="rounded-2xl border border-gold/50 bg-gold-soft p-4 text-sm leading-7 text-ink">
+        <div className="rounded-2xl border border-gold/60 bg-gold-soft p-4 text-sm leading-7 text-ink">
           <p className="font-bold">ارسال آنلاین فرم به‌زودی فعال می‌شود.</p>
-          <p className="mt-1 text-ink-2">
-            تا آن موقع، سریع‌ترین راه ارتباط با ما{" "}
-            <a href={telegram} target="_blank" rel="noopener noreferrer" className="font-bold text-brand-strong underline underline-offset-4">
-              تلگرام <span dir="ltr">{telegramHandle}</span>
-            </a>{" "}
-            یا ایمیل{" "}
-            <a href={`mailto:${email}`} className="font-bold text-brand-strong underline underline-offset-4">
-              <span dir="ltr" className="whitespace-nowrap">{email}</span>
-            </a>{" "}
-            است.
+          <p className="mb-3 mt-1 text-ink-2">
+            تا آن موقع، پیام‌تان را در ربات لرناموز در بله (<span dir="ltr">{baleHandle}</span>) یا در تلگرام (
+            <span dir="ltr">{telegramHandle}</span>) برای ما بفرستید.
           </p>
+          <ChannelButtons bale={bale} telegram={telegram} compact />
         </div>
       )}
 
@@ -279,7 +315,7 @@ export function ContactForm({
               />
             )}
             {err && (
-              <p id={errId(k)} className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-red-700 dark:text-red-400">
+              <p id={errId(k)} className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-red-700">
                 <span aria-hidden="true">●</span>
                 {err}
               </p>
@@ -306,20 +342,10 @@ export function ContactForm({
 
       <div ref={statusRef} tabIndex={-1} aria-live="polite" className="outline-none">
         {status === "error" && formError && (
-          <div role="alert" className="rounded-2xl border border-red-300 bg-red-50 p-4 text-sm leading-7 text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200">
+          <div role="alert" className="rounded-2xl border border-red-300 bg-red-50 p-4 text-sm leading-7 text-red-800">
             <p className="font-bold">{formError}</p>
-            <p className="mt-1">
-              راه‌های دیگر:{" "}
-              <a href={telegram} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-bold underline underline-offset-4">
-                <Telegram className="size-4" />
-                تلگرام
-              </a>{" "}
-              ·{" "}
-              <a href={`mailto:${email}`} className="inline-flex items-center gap-1 font-bold underline underline-offset-4">
-                <Mail className="size-4" />
-                ایمیل
-              </a>
-            </p>
+            <p className="mb-3 mt-1">می‌توانید پیام‌تان را از این راه‌ها هم بفرستید:</p>
+            <ChannelButtons bale={bale} telegram={telegram} compact />
           </div>
         )}
       </div>

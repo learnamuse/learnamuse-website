@@ -10,12 +10,15 @@ import { z } from "zod";
 import siteJson from "../../content/site.json";
 import pagesJson from "../../content/pages.json";
 import certificatesJson from "../../content/certificates.json";
+import botJson from "../../content/bot.json";
 import {
+  BotPageSchema,
   CertificatesFileSchema,
   certificateRoute,
   courseRoute,
   PagesSchema,
   SiteSchema,
+  type BotPage,
   type Certificate,
   type Course,
   type Pages,
@@ -23,7 +26,7 @@ import {
 } from "./schemas";
 
 export { SiteSchema, PagesSchema, CourseSchema, CertificateSchema } from "./schemas";
-export type { Site, Pages, Course, Certificate } from "./schemas";
+export type { Site, Pages, Course, Certificate, BotPage } from "./schemas";
 export type CertificateWithCourse = Certificate & { courseData: Course; route: string };
 
 function parse<T>(schema: z.ZodType<T>, data: unknown, file: string): T {
@@ -36,6 +39,8 @@ function parse<T>(schema: z.ZodType<T>, data: unknown, file: string): T {
 
 export const site: Site = parse(SiteSchema, siteJson, "content/site.json");
 export const pages: Pages = parse(PagesSchema, pagesJson, "content/pages.json");
+/** Copy for /bale-bot/ (content/bot.json). */
+export const bot: BotPage = parse(BotPageSchema, botJson, "content/bot.json");
 const certFile = parse(CertificatesFileSchema, certificatesJson, "content/certificates.json");
 
 export { certificateRoute, courseRoute };

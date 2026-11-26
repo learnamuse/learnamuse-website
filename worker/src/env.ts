@@ -24,8 +24,17 @@ export interface ExecutionContextLike {
 export interface Env {
   /** Comma-separated list of allowed browser origins (exact match). */
   ALLOWED_ORIGINS?: string;
+  /** Primary delivery: Bale Bot API (the Learnamuse bot, ble.ir/LearnamuseBot). */
+  BALE_BOT_TOKEN?: string;
+  /** Admin channel/group id the bot posts to (the bot must be a member/admin there). */
+  BALE_CHAT_ID?: string;
+  /** Bale Bot API base URL, default https://tapi.bale.ai (override only for local testing). */
+  BALE_API_BASE?: string;
+  /** Optional secondary delivery: Telegram Bot API. */
   TELEGRAM_BOT_TOKEN?: string;
   TELEGRAM_CHAT_ID?: string;
+  /** Telegram Bot API base URL, default https://api.telegram.org (override only for local testing). */
+  TELEGRAM_API_BASE?: string;
   /** When set, a valid Cloudflare Turnstile token is required. */
   TURNSTILE_SECRET?: string;
   /** Preferred rate limiter: Workers Rate Limiting binding. */

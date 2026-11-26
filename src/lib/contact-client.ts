@@ -7,7 +7,7 @@
  *   NEXT_PUBLIC_TURNSTILE_SITE_KEY   optional; when set the UI must render Turnstile and pass the token
  *
  * When CONTACT_ENABLED is false the UI should still render the form but explain that
- * messages go via Telegram/email instead (and link them), rather than failing silently.
+ * messages go via the Bale bot / Telegram instead (and link them), rather than failing silently.
  */
 
 import { MESSAGES, validateContactFields } from "../../worker/src/validation";
@@ -40,11 +40,11 @@ export function validateContact(input: ContactInput): Partial<Record<ContactFiel
 
 const TIMEOUT_MS = 15_000;
 const CLIENT_ERRORS = {
-  disabled: "فرم تماس هنوز راه‌اندازی نشده است. لطفاً از راه تلگرام یا ایمیل با ما در ارتباط باشید.",
+  disabled: "فرم تماس هنوز راه‌اندازی نشده است. لطفاً از راه ربات لرناموز در بله یا تلگرام با ما در ارتباط باشید.",
   timeout: "پاسخی از سرور دریافت نشد. لطفاً دوباره تلاش کنید.",
   network: "ارتباط با سرور برقرار نشد. اتصال اینترنت خود را بررسی کنید و دوباره تلاش کنید.",
   rateLimited: "تعداد درخواست‌ها بیش از حد مجاز است. لطفاً چند دقیقه دیگر دوباره تلاش کنید.",
-  server: "ارسال پیام با خطا روبه‌رو شد. لطفاً کمی بعد دوباره تلاش کنید یا از راه تلگرام با ما در ارتباط باشید.",
+  server: "ارسال پیام با خطا روبه‌رو شد. لطفاً کمی بعد دوباره تلاش کنید یا از راه ربات لرناموز در بله با ما در ارتباط باشید.",
 } as const;
 
 const FIELDS: readonly ContactField[] = ["name", "phone", "message"];

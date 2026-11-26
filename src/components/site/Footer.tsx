@@ -1,34 +1,47 @@
 import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/content";
+import { asset } from "@/lib/url";
 import { container } from "@/components/ui/styles";
 import { Diamond } from "@/components/ui/Diamond";
-import { Mail, Telegram, ArrowForward, ShieldCheck } from "@/components/ui/icons";
+import { Telegram, ArrowForward, ShieldCheck } from "@/components/ui/icons";
+import { BaleIcon } from "@/components/contact/BaleIcon";
 import { getNavItems } from "./nav";
 
 export function Footer() {
   const items = getNavItems();
   return (
-    <footer className="mt-auto border-t border-line bg-surface-2/70 print:hidden">
+    <footer className="mt-auto border-t border-line bg-surface-2 print:hidden">
       {/* CTA strip */}
       <div className={`${container} pt-12 sm:pt-16`}>
-        <div className="relative overflow-hidden rounded-card bg-brand-ink px-6 ring-1 ring-white/10 py-8 text-white sm:px-10 sm:py-10">
+        <div className="relative overflow-hidden rounded-card bg-brand-soft px-6 py-8 ring-1 ring-brand/25 sm:px-10 sm:py-10">
+          {/* The old site's organic CTA blobs (white PNG shapes), used as a mask and tinted brand green. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-brand opacity-[0.16]"
+            style={{
+              maskImage: `url(${asset("/images/2025/01/CTA-Shapes.png")})`,
+              WebkitMaskImage: `url(${asset("/images/2025/01/CTA-Shapes.png")})`,
+              maskSize: "100% 100%",
+              WebkitMaskSize: "100% 100%",
+            }}
+          />
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <p className="max-w-xl text-lg font-bold leading-9 sm:text-xl">{site.footer.cta}</p>
+            <p className="max-w-xl text-lg font-bold leading-9 text-ink sm:text-xl">{site.footer.cta}</p>
             <div className="flex flex-wrap gap-3">
               <a
-                href={site.contact.telegram}
+                href={site.contact.bale}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 font-bold text-brand-ink transition-colors hover:bg-white"
+                className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 font-bold text-brand-ink transition-colors hover:bg-brand-strong hover:text-white"
               >
-                <Telegram className="size-5" />
-                پیام در تلگرام
+                <BaleIcon className="size-5" />
+                گفتگو در بله
                 <span className="sr-only">(در پنجرهٔ جدید باز می‌شود)</span>
               </a>
               <Link
                 href="/contact-us/"
-                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-3 font-bold text-white transition-colors hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-white px-5 py-3 font-bold text-ink transition-colors hover:border-brand hover:text-brand-strong"
               >
                 فرم تماس
                 <ArrowForward className="size-4" />
@@ -70,6 +83,18 @@ export function Footer() {
           <ul className="space-y-3">
             <li>
               <a
+                href={site.contact.bale}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-ink-2 hover:text-brand-strong"
+              >
+                <BaleIcon className="size-4 shrink-0 text-brand-strong" />
+                <span>بله:</span>
+                <span dir="ltr">{site.contact.baleHandle}</span>
+              </a>
+            </li>
+            <li>
+              <a
                 href={site.contact.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -77,15 +102,6 @@ export function Footer() {
               >
                 <Telegram className="size-4 shrink-0 text-brand-strong" />
                 <span dir="ltr">{site.contact.telegramHandle}</span>
-              </a>
-            </li>
-            <li>
-              <a
-                href={`mailto:${site.contact.email}`}
-                className="inline-flex items-center gap-2 break-all text-ink-2 hover:text-brand-strong"
-              >
-                <Mail className="size-4 shrink-0 text-brand-strong" />
-                <span dir="ltr">{site.contact.email}</span>
               </a>
             </li>
           </ul>
@@ -99,7 +115,13 @@ export function Footer() {
                     rel="noopener noreferrer"
                     className="inline-flex size-10 items-center justify-center rounded-full border border-line bg-surface text-ink-2 transition-colors hover:border-brand hover:text-brand-strong"
                   >
-                    {/telegram/i.test(s.label) ? <Telegram className="size-5" /> : <Diamond className="size-4" />}
+                    {/telegram/i.test(s.label) ? (
+                      <Telegram className="size-5" />
+                    ) : /bale/i.test(s.label) ? (
+                      <BaleIcon className="size-5" />
+                    ) : (
+                      <Diamond className="size-4" />
+                    )}
                     <span className="sr-only">{s.label}</span>
                   </a>
                 </li>
@@ -121,7 +143,7 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-line">
+      <div className="border-t border-line bg-white/60">
         <div className={`${container} flex flex-col items-center justify-between gap-2 py-6 text-sm text-ink-3 sm:flex-row`}>
           <p>{site.footer.copyright}</p>
           <p className="flex items-center gap-2">

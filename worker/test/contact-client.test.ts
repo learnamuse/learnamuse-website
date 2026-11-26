@@ -47,16 +47,17 @@ describe("submitContact", () => {
 
   it("round-trips through the real worker handler", async () => {
     vi.spyOn(console, "log").mockImplementation(() => {});
-    const telegram = vi.fn(async () => Response.json({ ok: true }));
+    const bale = vi.fn(async (url: string) => (void url, Response.json({ ok: true })));
     vi.stubGlobal("fetch", async (url: string, init: RequestInit) => {
       if (url === ENDPOINT) {
         const req = new Request(url, { ...init, headers: { ...(init.headers as Record<string, string>), Origin: "https://learnamuse.com" } });
-        return handleRequest(req, { TELEGRAM_BOT_TOKEN: "t", TELEGRAM_CHAT_ID: "1" });
+        return handleRequest(req, { BALE_BOT_TOKEN: "t", BALE_CHAT_ID: "1" });
       }
-      return telegram();
+      return bale(url);
     });
     expect(await client.submitContact(valid)).toEqual({ ok: true });
-    expect(telegram).toHaveBeenCalledOnce();
+    expect(bale).toHaveBeenCalledOnce();
+    expect(bale.mock.calls[0][0]).toBe("https://tapi.bale.ai/bott/sendMessage");
   });
 
   it("passes through server errors and maps unknown responses", async () => {

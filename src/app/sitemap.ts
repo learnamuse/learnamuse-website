@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     { url: absoluteUrl("/"), changeFrequency: "monthly", priority: 1 },
+    { url: absoluteUrl("/bale-bot/"), changeFrequency: "monthly", priority: 0.8 },
     { url: absoluteUrl("/about-us/"), changeFrequency: "yearly", priority: 0.7 },
     { url: absoluteUrl("/contact-us/"), changeFrequency: "yearly", priority: 0.7 },
     {

@@ -3,6 +3,7 @@
   "routes": [
     "/",
     "/about-us/",
+    "/bale-bot/",
     "/certificates/",
     "/certificates/aitoolbox/",
     "/certificates/aitoolbox/elham-ghasedi/",

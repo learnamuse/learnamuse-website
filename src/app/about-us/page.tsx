@@ -29,7 +29,12 @@ const VALUE_STYLES = [
 export default function AboutPage() {
   return (
     <>
-      <PageHeader eyebrow={`${site.name} · ${site.nameEn}`} title={about.title} lead={<p>{about.intro}</p>} />
+      <PageHeader
+        eyebrow={`${site.name} · ${site.nameEn}`}
+        title={about.title}
+        lead={<p>{about.intro}</p>}
+        image={{ src: "/images/2025/01/Photo-by-Dose-Media-on-Unsplash.jpg", position: "left 42%" }}
+      />
 
       <section aria-labelledby="values-title" className="py-16 sm:py-20">
         <div className={container}>

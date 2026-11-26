@@ -1,5 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import worker, { ERRORS, checkRateLimit, escapeHtml, formatTelegramMessage, handleRequest, type Env } from "../src/index";
+import worker, {
+  ERRORS,
+  checkRateLimit,
+  escapeHtml,
+  formatPlainMessage,
+  formatTehranTime,
+  formatTelegramMessage,
+  handleRequest,
+  type Env,
+} from "../src/index";
 import type { KVLike } from "../src/env";
 import { MESSAGES } from "../src/validation";
 
@@ -18,7 +27,15 @@ function req(body: unknown, init: { origin?: string | null; method?: string; typ
   });
 }
 
-const baseEnv = (): Env => ({ TELEGRAM_BOT_TOKEN: "TOKEN", TELEGRAM_CHAT_ID: "-100123" });
+const baseEnv = (): Env => ({ BALE_BOT_TOKEN: "BALETOKEN", BALE_CHAT_ID: "5550001" });
+const bothEnv = (): Env => ({ ...baseEnv(), TELEGRAM_BOT_TOKEN: "TOKEN", TELEGRAM_CHAT_ID: "-100123" });
+const telegramOnly = (): Env => ({ TELEGRAM_BOT_TOKEN: "TOKEN", TELEGRAM_CHAT_ID: "-100123" });
+const BALE_URL = "https://tapi.bale.ai/botBALETOKEN/sendMessage";
+const TG_URL = "https://api.telegram.org/botTOKEN/sendMessage";
+const bodyOf = (url: string) => {
+  const call = fetchMock.mock.calls.find(([u]) => String(u) === url);
+  return call ? JSON.parse((call[1] as RequestInit).body as string) : undefined;
+};
 
 function memoryKV(): KVLike & { data: Map<string, string> } {
   const data = new Map<string, string>();
@@ -33,6 +50,7 @@ let fetchMock: ReturnType<typeof vi.fn>;
 beforeEach(() => {
   fetchMock = vi.fn(async (url: string | URL | Request) => {
     const u = String(url);
+    if (u.startsWith("https://tapi.bale.ai/")) return Response.json({ ok: true, result: { message_id: 1 } });
     if (u.startsWith("https://api.telegram.org/")) return Response.json({ ok: true });
     if (u.includes("turnstile")) return Response.json({ success: true });
     throw new Error(`unexpected fetch ${u}`);
@@ -177,26 +195,64 @@ describe("spam protection", () => {
 });
 
 describe("delivery", () => {
-  it("sends an escaped Persian HTML message to Telegram", async () => {
+  it("sends a plain-text Persian message to the Bale admin chat", async () => {
     const res = await handleRequest(req(valid), baseEnv());
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
     expect(res.headers.get("Access-Control-Allow-Origin")).toBe(ORIGIN);
 
-    const [url, init] = fetchMock.mock.calls[0];
-    expect(String(url)).toBe("https://api.telegram.org/botTOKEN/sendMessage");
-    const payload = JSON.parse((init as RequestInit).body as string);
-    expect(payload.chat_id).toBe("-100123");
-    expect(payload.parse_mode).toBe("HTML");
-    expect(payload.text).toContain("سارا &lt;رحیمی&gt;");
-    expect(payload.text).toContain("<code>09123456789</code>");
-    expect(payload.text).toContain("سلام &amp; درود");
-    expect(payload.text).toContain("بله");
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(String(fetchMock.mock.calls[0][0])).toBe(BALE_URL);
+    const payload = bodyOf(BALE_URL);
+    expect(payload.chat_id).toBe("5550001");
+    expect(payload.parse_mode).toBeUndefined();
+    expect(payload.text).toMatch(/^📩 پیام جدید از وب‌سایت لرناموز\n/);
+    expect(payload.text).toContain("👤 نام: سارا <رحیمی>"); // plain text: no escaping
+    expect(payload.text).toContain("📱 موبایل: 09123456789"); // normalized
+    expect(payload.text).toContain("🤝 تمایل به همکاری آموزشی: بله");
+    expect(payload.text).toContain("💬 پیام:\nسلام & درود");
+    expect(payload.text).toContain("🌐 صفحه: https://learnamuse.com");
   });
 
-  it("returns 502 when Telegram fails and nothing is archived", async () => {
+  it("honours BALE_API_BASE (local testing)", async () => {
+    fetchMock.mockImplementation(async () => Response.json({ ok: true }));
+    await handleRequest(req(valid), { ...baseEnv(), BALE_API_BASE: "http://127.0.0.1:9999/" });
+    expect(String(fetchMock.mock.calls[0][0])).toBe("http://127.0.0.1:9999/botBALETOKEN/sendMessage");
+  });
+
+  it("sends to Bale and Telegram when both are configured", async () => {
+    const res = await handleRequest(req(valid), bothEnv());
+    expect(res.status).toBe(200);
+    expect(bodyOf(BALE_URL).text).toContain("سارا <رحیمی>");
+    const tg = bodyOf(TG_URL);
+    expect(tg.chat_id).toBe("-100123");
+    expect(tg.parse_mode).toBe("HTML");
+    expect(tg.text).toContain("سارا &lt;رحیمی&gt;");
+    expect(tg.text).toContain("<code>09123456789</code>");
+    expect(tg.text).toContain("سلام &amp; درود");
+  });
+
+  it("succeeds when one of two channels fails", async () => {
+    fetchMock.mockImplementation(async (url: string) =>
+      String(url).startsWith("https://tapi.bale.ai/") ? new Response("down", { status: 503 }) : Response.json({ ok: true }),
+    );
+    expect((await handleRequest(req(valid), bothEnv())).status).toBe(200);
+  });
+
+  it("treats a Bot API ok:false body as a failure", async () => {
+    fetchMock.mockImplementation(async () => Response.json({ ok: false, error_code: 400, description: "chat not found" }));
+    expect((await handleRequest(req(valid), baseEnv())).status).toBe(502);
+  });
+
+  it("works with Telegram only (legacy setup)", async () => {
+    const res = await handleRequest(req(valid), telegramOnly());
+    expect(res.status).toBe(200);
+    expect(bodyOf(TG_URL).parse_mode).toBe("HTML");
+  });
+
+  it("returns 502 when every channel fails and nothing is archived", async () => {
     fetchMock.mockImplementation(async () => new Response("bad", { status: 400 }));
-    const res = await handleRequest(req(valid), baseEnv());
+    const res = await handleRequest(req(valid), bothEnv());
     expect(res.status).toBe(502);
     expect(await res.json()).toEqual({ ok: false, error: ERRORS.unavailable });
   });
@@ -206,7 +262,7 @@ describe("delivery", () => {
     expect(res.status).toBe(503);
   });
 
-  it("succeeds when Telegram fails but the message is archived in KV", async () => {
+  it("succeeds when delivery fails but the message is archived in KV", async () => {
     fetchMock.mockImplementation(async () => {
       throw new Error("network");
     });
@@ -241,6 +297,16 @@ describe("delivery", () => {
 describe("formatting helpers", () => {
   it("escapeHtml", () => {
     expect(escapeHtml(`<b>"x" & y</b>`)).toBe("&lt;b&gt;&quot;x&quot; &amp; y&lt;/b&gt;");
+  });
+  it("formats the time as a Jalali date in Asia/Tehran", () => {
+    // 2026-11-26T11:00Z = Thursday 5 Azar 1405, 14:30 Tehran time
+    expect(formatTehranTime(new Date("2026-11-26T11:00:00Z"))).toBe("پنجشنبه ۵ آذر ۱۴۰۵، ساعت ۱۴:۳۰");
+  });
+  it("plain message marks a call-back request without text", () => {
+    const text = formatPlainMessage({ name: "علی", phone: "09121112233", message: "", wantsCollaboration: false }, new Date(0), null);
+    expect(text).toContain("(بدون متن — فقط درخواست تماس)");
+    expect(text).toContain("تمایل به همکاری آموزشی: خیر");
+    expect(text).toContain("🌐 صفحه: ارتباط با ما");
   });
   it("omits empty message section", () => {
     const text = formatTelegramMessage({ name: "علی", phone: "09121112233", message: "", wantsCollaboration: false }, new Date(0), null);

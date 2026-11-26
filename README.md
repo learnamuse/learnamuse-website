@@ -1,6 +1,6 @@
 # Learnamuse website (لرناموز)
 
-This is the Persian, right-to-left website for Learnamuse. It is a redesign of the WordPress site at https://learnamuse.com and is built as a **Next.js 16 static export** hosted on **GitHub Pages**. The contact form posts to a small **Cloudflare Worker** (in `worker/`), which forwards each message to Telegram.
+This is the Persian, right-to-left website for Learnamuse. It is a redesign of the WordPress site at https://learnamuse.com and is built as a **Next.js 16 static export** hosted on **GitHub Pages**. The contact form posts to a small **Cloudflare Worker** (in `worker/`), which forwards each message to the admin chat of the Learnamuse **Bale** bot (and optionally Telegram).
 
 For the team contract (hard constraints and file ownership), see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
@@ -10,7 +10,7 @@ For the team contract (hard constraints and file ownership), see [`docs/ARCHITEC
 - **React 19, Tailwind CSS 4, Vazirmatn**.
 - **zod** validates the content in `content/*.json` at build time.
 - **sharp** pre-generates WebP image variants. `next/image` uses a custom loader to pick them up.
-- **Cloudflare Worker** handles the contact form: Telegram Bot API delivery, optional Turnstile, per-IP rate limiting.
+- **Cloudflare Worker** handles the contact form: Bale Bot API delivery (optional Telegram), optional Turnstile, per-IP rate limiting.
 - **GitHub Actions** builds the site and deploys it to Pages.
 
 ## Local development
@@ -76,7 +76,15 @@ All of these are `force-static` route handlers. In the export, a handler whose f
 
 ## Contact form
 
-The UI only talks to `src/lib/contact-client.ts`. Validation rules live in `worker/src/validation.ts` and are shared by the client and the Worker. Without `NEXT_PUBLIC_CONTACT_ENDPOINT`, the form tells visitors to use Telegram or email instead. To deploy the Worker, set its secrets, and connect it to the site, see [`worker/README.md`](worker/README.md).
+The UI only talks to `src/lib/contact-client.ts`. Validation rules live in `worker/src/validation.ts` and are shared by the client and the Worker. Without `NEXT_PUBLIC_CONTACT_ENDPOINT`, the form tells visitors to use the Bale bot (`@LearnamuseBot`) or Telegram instead. Contact channels come from `content/site.json` → `contact` (`email` there is a no-reply sender address, not a channel).
+
+To switch the form on (full details in [`worker/README.md`](worker/README.md)):
+
+1. `cd worker && npx wrangler login`
+2. `npx wrangler secret put BALE_BOT_TOKEN` (the Learnamuse bot's token) and `npx wrangler secret put BALE_CHAT_ID` (the bot's admin channel id, its `ADMIN_CHANNEL_ID`; the bot must be a member/admin there). Optionally `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` and `TURNSTILE_SECRET`.
+3. `npm run deploy`, then send the test `curl` from the Worker README and check that it arrives in Bale.
+4. Add the repo variable `NEXT_PUBLIC_CONTACT_ENDPOINT` = `https://learnamuse-contact.<account>.workers.dev/contact` (Settings → Secrets and variables → Actions → Variables).
+5. Re-run the **Deploy to GitHub Pages** workflow.
 
 ## Deployment (GitHub Pages)
 
@@ -120,5 +128,6 @@ All live URLs (`/about-us/`, `/contact-us/`, `/certificates/aitoolbox/<slug>/`) 
 | `NEXT_PUBLIC_SITE_URL` | Set by the deploy workflow (origin only) | Canonical origin for the sitemap, metadata and share links. `src/lib/url.ts` appends the base path. Defaults to `https://learnamuse.com`. |
 | `NEXT_PUBLIC_CONTACT_ENDPOINT` | Repo variable | Worker URL including `/contact`. The form is disabled when this is empty. |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Repo variable, optional | Turnstile site key. Requires `TURNSTILE_SECRET` on the Worker. |
-| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TURNSTILE_SECRET` | Worker secrets (`wrangler secret put`) | Message delivery and spam protection |
+| `BALE_BOT_TOKEN`, `BALE_CHAT_ID` | Worker secrets (`wrangler secret put`) | Primary delivery to the Bale bot's admin chat |
+| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TURNSTILE_SECRET` | Worker secrets, optional | Secondary delivery and spam protection |
 | `CLOUDFLARE_API_TOKEN` (secret), `CLOUDFLARE_ACCOUNT_ID` (variable) | GitHub, optional | Worker deploys from Actions |

@@ -41,6 +41,8 @@ jobs:
         run: npm ci
       - if: env.HAS_TOKEN == 'true'
         run: npm test
+      # Worker secrets (BALE_BOT_TOKEN, BALE_CHAT_ID, optional TELEGRAM_*, TURNSTILE_SECRET) live in
+      # Cloudflare (`wrangler secret put`) and survive deploys, so they are not passed from GitHub.
       - name: wrangler deploy
         if: env.HAS_TOKEN == 'true'
         run: npx wrangler deploy

@@ -36,6 +36,7 @@ export default function CertificatesPage() {
       <PageHeader
         eyebrow="گواهی‌های لرناموز"
         title={title}
+        image={{ src: "/images/2025/01/Photo-by-Tirachard-Kumtanom.jpg", position: "left 40%" }}
         lead={
           <p>
             هر گواهی لرناموز یک صفحهٔ اختصاصی با نشانی ثابت روی همین وب‌سایت دارد. اگر گواهی‌ای در این فهرست باشد، یعنی

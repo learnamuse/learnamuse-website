@@ -16,6 +16,10 @@
       "route": "/"
     },
     {
+      "label": "ربات بله",
+      "route": "/bale-bot/"
+    },
+    {
       "label": "ارتباط با ما",
       "route": "/contact-us/"
     },
@@ -29,11 +33,17 @@
     "copyright": "@ لرناموز | تمامی حقوق محفوظ است."
   },
   "contact": {
+    "bale": "https://ble.ir/LearnamuseBot",
+    "baleHandle": "@LearnamuseBot",
     "telegram": "https://t.me/LearnAmuseSupport",
     "telegramHandle": "@LearnAmuseSupport",
     "email": "no-reply@learnamuse.com"
   },
   "social": [
+    {
+      "label": "Bale",
+      "href": "https://ble.ir/LearnamuseBot"
+    },
     {
       "label": "Telegram",
       "href": "https://t.me/LearnAmuseSupport"

@@ -1,16 +1,12 @@
 @import "tailwindcss";
 
-/* `dark:` follows the OS preference unless <html data-theme> overrides it (same rule as the tokens). */
-@custom-variant dark {
-  &:where([data-theme="dark"], [data-theme="dark"] *) {
-    @slot;
-  }
-  @media (prefers-color-scheme: dark) {
-    &:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *) {
-      @slot;
-    }
-  }
-}
+/*
+ * Single light theme. There is no dark mode: the site is always white.
+ * Tailwind v4's built-in `dark:` variant would follow the OS preference, so it is
+ * redefined to match nothing (no element ever carries data-theme="dark"). Any
+ * leftover `dark:` utility is therefore inert. Don't add new ones.
+ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /*
  * Learnamuse design tokens.
@@ -18,6 +14,7 @@
  * Use these via Tailwind utilities: bg-brand, text-ink, border-line, bg-surface, etc.
  */
 :root {
+  color-scheme: light;
   --brand: #7fd141;
   --brand-strong: #407c17;   /* AA-contrast green for text/links on light bg (>= 4.6:1 on bg, surface-2, brand-soft) */
   --brand-soft: #eef8e4;
@@ -25,53 +22,16 @@
   --gold: #f2b544;
   --gold-soft: #fdf3dc;
 
-  --bg: #fbfcf8;
+  --bg: #ffffff;
   --surface: #ffffff;
-  --surface-2: #f3f5ee;
+  --surface-2: #f5f7f1;
   --ink: #14180f;
   --ink-2: #4a5242;
-  --ink-3: #697061;          /* >= 4.6:1 on bg / surface-2 (small hint text) */
+  --ink-3: #676e5f;          /* >= 4.9:1 on white / surface-2 (small hint text) */
   --line: #e3e7da;
 
   --radius: 1.25rem;
   --shadow: 0 1px 2px rgb(20 24 15 / 0.04), 0 8px 24px -8px rgb(20 24 15 / 0.10);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --brand: #8bdc4c;
-    --brand-strong: #9be35f;
-    --brand-soft: #1b2a12;
-    --brand-ink: #0f1a07;
-    --gold: #f5c25f;
-    --gold-soft: #2c2412;
-
-    --bg: #0e110b;
-    --surface: #151a10;
-    --surface-2: #1c2216;
-    --ink: #eef2e8;
-    --ink-2: #b9c1ae;
-    --ink-3: #8a9380;
-    --line: #2a3222;
-    --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
-  }
-}
-
-:root[data-theme="dark"] {
-  --brand: #8bdc4c;
-  --brand-strong: #9be35f;
-  --brand-soft: #1b2a12;
-  --brand-ink: #0f1a07;
-  --gold: #f5c25f;
-  --gold-soft: #2c2412;
-  --bg: #0e110b;
-  --surface: #151a10;
-  --surface-2: #1c2216;
-  --ink: #eef2e8;
-  --ink-2: #b9c1ae;
-  --ink-3: #8a9380;
-  --line: #2a3222;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
 }
 
 @theme inline {
@@ -133,7 +93,7 @@ body {
 
 /* ---------------------------------------------------------------------------
  * Motif: the logo's rounded diamond + dot, used as a quiet lattice texture.
- * Implemented as a mask so it follows the theme colour (light + dark).
+ * Implemented as a mask so it takes the brand colour.
  * ------------------------------------------------------------------------- */
 .motif-lattice {
   background-color: var(--brand);
@@ -148,7 +108,7 @@ body {
   pointer-events: none;
 }
 
-/* Certificate paper: always a light "sheet", even in dark mode (tokens re-scoped locally). */
+/* Certificate paper: a warm off-white "sheet" (tokens re-scoped locally). */
 .cert-paper {
   --surface: #fffefa;
   --surface-2: #f6f7f0;
@@ -175,9 +135,7 @@ body {
 }
 
 @media print {
-  :root,
-  :root[data-theme="dark"],
-  :root:not([data-theme="light"]) {
+  :root {
     --brand: #7fd141;
     --brand-strong: #4f9a1c;
     --brand-soft: #eef8e4;
