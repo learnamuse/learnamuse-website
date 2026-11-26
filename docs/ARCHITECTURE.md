@@ -25,18 +25,17 @@ It is deployed to **GitHub Pages** as a Next.js 16 **static export**, so no Node
 - `public/images/**`: all images from the old site. Paths mirror the old `wp-content/uploads/` folder.
 
 ## Design tokens
-Defined in `src/app/globals.css` and exposed as Tailwind colors: `brand`, `brand-strong`, `brand-soft`, `brand-ink`, `gold`, `gold-soft`, `bg`, `surface`, `surface-2`, `ink`, `ink-2`, `ink-3`, `line`. Also `rounded-card` and `shadow-card`. Dark mode follows `prefers-color-scheme`, and `data-theme` on `<html>` overrides it. The font is Vazirmatn (`next/font`).
+Defined in `src/app/globals.css` and exposed as Tailwind colors: `brand`, `brand-strong`, `brand-soft`, `brand-ink`, `gold`, `gold-soft`, `bg`, `surface`, `surface-2`, `ink`, `ink-2`, `ink-3`, `line`. Also `rounded-card` and `shadow-card`. The site is light-only (no dark mode). The font is Vazirmatn (`next/font`).
 
 ## File ownership (agents must not edit each other's files)
 | Area | Owner |
 |---|---|
 | `src/app/**/page.tsx`, `src/app/**/layout.tsx`, `src/app/not-found.tsx`, `src/app/globals.css`, `src/components/**` | Frontend / design |
-| `src/lib/contact-client.ts` (bodies only; exported types and signatures are frozen) | Backend |
 | `src/app/data/**` (static JSON endpoints), `src/app/sitemap.ts`, `src/app/robots.ts`, `src/app/manifest.ts` | Backend |
-| `scripts/**`, `worker/**`, `.github/**`, `public/.nojekyll`, `public/CNAME`, `package.json` scripts | Backend |
+| `scripts/**`, `.github/**`, `public/.nojekyll`, `public/CNAME`, `package.json` scripts | Backend |
 | `src/lib/content.ts`, `src/lib/url.ts`, `src/lib/image-loader.ts`, `next.config.ts`, `content/**` | Shared. Change only if necessary, and say so in your report. |
 
 Both agents may add npm dependencies (`npm i <pkg>@<exact-version>`).
 
-## Contact form contract
-The UI imports from `src/lib/contact-client.ts`: `submitContact`, `validateContact`, `CONTACT_ENABLED`, `TURNSTILE_SITE_KEY`, and the related types. The backend implements them against the Cloudflare Worker in `worker/`.
+## Contact
+There is no form or contact backend. Contact pages link to the channels in `content/site.json` → `contact`: the Bale bot is the main channel and Telegram is secondary.

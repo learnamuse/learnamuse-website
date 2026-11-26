@@ -43,7 +43,5 @@ next-env.d.ts
 # build outputs
 /out
 /public/_img
-/worker/node_modules
-/worker/.wrangler
 .dev.vars
 /.next-*

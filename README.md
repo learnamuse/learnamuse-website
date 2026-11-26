@@ -1,6 +1,6 @@
 # Learnamuse website (لرناموز)
 
-This is the Persian, right-to-left website for Learnamuse. It is a redesign of the WordPress site at https://learnamuse.com and is built as a **Next.js 16 static export** hosted on **GitHub Pages**. The contact form posts to a small **Cloudflare Worker** (in `worker/`), which forwards each message to the admin chat of the Learnamuse **Bale** bot (and optionally Telegram).
+This is the Persian, right-to-left website for Learnamuse. It is a redesign of the WordPress site at https://learnamuse.com and is built as a **Next.js 16 static export** hosted on **GitHub Pages**. There is no contact form: the contact page sends visitors to the Learnamuse **Bale** bot ([@LearnamuseBot](https://ble.ir/LearnamuseBot)) and to Telegram support.
 
 For the team contract (hard constraints and file ownership), see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
@@ -10,7 +10,6 @@ For the team contract (hard constraints and file ownership), see [`docs/ARCHITEC
 - **React 19, Tailwind CSS 4, Vazirmatn**.
 - **zod** validates the content in `content/*.json` at build time.
 - **sharp** pre-generates WebP image variants. `next/image` uses a custom loader to pick them up.
-- **Cloudflare Worker** handles the contact form: Bale Bot API delivery (optional Telegram), optional Turnstile, per-IP rate limiting.
 - **GitHub Actions** builds the site and deploys it to Pages.
 
 ## Local development
@@ -34,7 +33,6 @@ Node 22 or newer is required.
 | `npm run images:unused` | Lists images in `public/images/` that nothing in `content/` or `src/` references. It only reports and never deletes. |
 | `npm run validate` | Validates content against the zod schemas in `src/lib/schemas.ts`. It also checks that:<ul><li>every `/images/...` path exists, with exact letter case (GitHub Pages is case-sensitive)</li><li>slugs are unique</li><li>nav routes exist</li><li>no route listed in `scripts/published-routes.json` has disappeared</li></ul>Exits 1 on any error. CI runs it before every build. |
 | `npm run cert:add` | Adds a graduate certificate. See below. |
-| `npm run worker:test` | Runs the Worker's test suite. |
 
 ## Editing content
 
@@ -74,17 +72,9 @@ The course duration comes from the course. Commit the changes and push to `main`
 
 All of these are `force-static` route handlers. In the export, a handler whose folder name has an extension (`data/certificates.json/route.ts`) is written as that plain file, and `trailingSlash` does not affect it.
 
-## Contact form
+## Contact
 
-The UI only talks to `src/lib/contact-client.ts`. Validation rules live in `worker/src/validation.ts` and are shared by the client and the Worker. Without `NEXT_PUBLIC_CONTACT_ENDPOINT`, the form tells visitors to use the Bale bot (`@LearnamuseBot`) or Telegram instead. Contact channels come from `content/site.json` → `contact` (`email` there is a no-reply sender address, not a channel).
-
-To switch the form on (full details in [`worker/README.md`](worker/README.md)):
-
-1. `cd worker && npx wrangler login`
-2. `npx wrangler secret put BALE_BOT_TOKEN` (the Learnamuse bot's token) and `npx wrangler secret put BALE_CHAT_ID` (the bot's admin channel id, its `ADMIN_CHANNEL_ID`; the bot must be a member/admin there). Optionally `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` and `TURNSTILE_SECRET`.
-3. `npm run deploy`, then send the test `curl` from the Worker README and check that it arrives in Bale.
-4. Add the repo variable `NEXT_PUBLIC_CONTACT_ENDPOINT` = `https://learnamuse-contact.<account>.workers.dev/contact` (Settings → Secrets and variables → Actions → Variables).
-5. Re-run the **Deploy to GitHub Pages** workflow.
+The contact page (`/contact-us/`), the footer and the `/bale-bot/` page link to the contact channels in `content/site.json` → `contact`: the Bale bot (`bale`, `baleHandle`) as the main channel, and Telegram support (`telegram`, `telegramHandle`). `email` there is a no-reply sender address and is not shown as a channel. To change a channel, edit that file; no backend is involved.
 
 ## Deployment (GitHub Pages)
 
@@ -98,13 +88,12 @@ To switch the form on (full details in [`worker/README.md`](worker/README.md)):
 6. Add `out/.nojekyll`
 7. Upload the Pages artifact and deploy it
 
-`ci.yml` runs on pull requests: validate, typecheck, lint, and the Worker tests and bundle. `worker-deploy.yml` deploys the Worker when `worker/**` changes, and is skipped until a `CLOUDFLARE_API_TOKEN` secret exists.
+`ci.yml` runs on pull requests: validate, typecheck and lint.
 
 One-time setup:
 
 1. Push to `git@github.com:learnamuse/learnamuse-website.git`.
 2. Go to **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-3. Optionally, add these under **Settings → Secrets and variables → Actions → Variables**: `NEXT_PUBLIC_CONTACT_ENDPOINT` and `NEXT_PUBLIC_TURNSTILE_SITE_KEY`.
 
 Until a custom domain is set, the site is served at `https://learnamuse.github.io/learnamuse-website/`. All links work under that sub-path because the workflow sets `NEXT_PUBLIC_BASE_PATH`. `robots.txt` only takes effect at a host root, which means after the domain switch.
 
@@ -126,8 +115,3 @@ All live URLs (`/about-us/`, `/contact-us/`, `/certificates/aitoolbox/<slug>/`) 
 |---|---|---|
 | `NEXT_PUBLIC_BASE_PATH` | Set by the deploy workflow from `configure-pages` | `""` on a custom domain, `/learnamuse-website` on github.io |
 | `NEXT_PUBLIC_SITE_URL` | Set by the deploy workflow (origin only) | Canonical origin for the sitemap, metadata and share links. `src/lib/url.ts` appends the base path. Defaults to `https://learnamuse.com`. |
-| `NEXT_PUBLIC_CONTACT_ENDPOINT` | Repo variable | Worker URL including `/contact`. The form is disabled when this is empty. |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Repo variable, optional | Turnstile site key. Requires `TURNSTILE_SECRET` on the Worker. |
-| `BALE_BOT_TOKEN`, `BALE_CHAT_ID` | Worker secrets (`wrangler secret put`) | Primary delivery to the Bale bot's admin chat |
-| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `TURNSTILE_SECRET` | Worker secrets, optional | Secondary delivery and spam protection |
-| `CLOUDFLARE_API_TOKEN` (secret), `CLOUDFLARE_ACCOUNT_ID` (variable) | GitHub, optional | Worker deploys from Actions |

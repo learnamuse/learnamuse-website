@@ -45,18 +45,6 @@ export const PagesSchema = z.object({
   }),
   contact: z.object({
     title: z.string(),
-    form: z.object({
-      fields: z.array(
-        z.object({
-          key: z.enum(["name", "phone", "message", "wantsCollaboration"]),
-          type: z.string(),
-          label: z.string(),
-          placeholder: z.string(),
-          required: z.boolean(),
-        }),
-      ),
-      submitLabel: z.string(),
-    }),
   }),
 });
 

@@ -52,8 +52,6 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           # Origin only — src/lib/url.ts appends NEXT_PUBLIC_BASE_PATH itself.
           NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.origin }}
-          NEXT_PUBLIC_CONTACT_ENDPOINT: ${{ vars.NEXT_PUBLIC_CONTACT_ENDPOINT }}
-          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
 
       - name: Disable Jekyll
         run: touch out/.nojekyll

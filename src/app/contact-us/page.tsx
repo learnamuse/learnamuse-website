@@ -6,13 +6,12 @@ import { PageHeader } from "@/components/ui/PageHeader";
 import { container } from "@/components/ui/styles";
 import { Telegram, External, Users, School, HandHeart, Clock, ShieldCheck } from "@/components/ui/icons";
 import { BaleIcon } from "@/components/contact/BaleIcon";
-import { ContactForm } from "@/components/contact/ContactForm";
 import { Reveal, Stagger } from "@/components/motion/Reveal";
 import { cardLift } from "@/components/ui/styles";
 
 const contact = pages.contact;
 const description =
-  "راه‌های ارتباط با تیم لرناموز: ربات لرناموز در پیام‌رسان بله، تلگرام و فرم تماس برای پرسش، پیشنهاد یا درخواست همکاری.";
+  "راه‌های ارتباط با تیم لرناموز: ربات لرناموز در پیام‌رسان بله و پشتیبانی تلگرام، برای پرسش، پیشنهاد یا درخواست همکاری.";
 
 export const metadata: Metadata = {
   title: contact.title,
@@ -33,12 +32,12 @@ const topics = [
   {
     icon: HandHeart,
     title: "آموزگاران",
-    body: "اگر می‌خواهید با لرناموز همکاری آموزشی داشته باشید، فرم این صفحه را پر کنید و گزینهٔ «تمایل به همکاری» را بزنید.",
+    body: "اگر می‌خواهید با لرناموز همکاری آموزشی داشته باشید، در ربات لرناموز در بله یا در تلگرام به ما پیام بدهید.",
   },
   {
     icon: School,
     title: "مدارس و آموزشگاه‌ها",
-    body: "برای همکاری مدرسه‌ها و آموزشگاه‌ها و راه‌اندازی ربات و پنل اختصاصی، پیام بگذارید تا برای هماهنگی با شما تماس بگیریم.",
+    body: "برای همکاری مدرسه‌ها و آموزشگاه‌ها و راه‌اندازی ربات و پنل اختصاصی، در بله یا تلگرام پیام بگذارید تا برای هماهنگی با شما در ارتباط باشیم.",
   },
 ];
 
@@ -53,13 +52,13 @@ export default function ContactPage() {
         image={{ src: "/images/2025/01/pexels-ann-poan-Photo-by-Ann-poan-1280x1080.jpg", position: "left 35%" }}
         lead={
           <p>
-            {site.footer.cta} سریع‌ترین راه، گفتگو با ربات لرناموز در پیام‌رسان بله است؛ می‌توانید فرم زیر را هم پر کنید تا
-            با شما تماس بگیریم.
+            {site.footer.cta} سریع‌ترین راه، گفتگو با ربات لرناموز در پیام‌رسان بله است؛ اگر به بله دسترسی ندارید، در تلگرام
+            پیام بدهید.
           </p>
         }
       />
 
-      <div className={`${container} grid gap-8 py-12 sm:py-16 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12`}>
+      <div className={`${container} grid items-start gap-8 py-12 sm:py-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-12`}>
         <div className="space-y-8">
           <Reveal as="section" aria-labelledby="channels-title">
             <h2 id="channels-title" className="text-lg font-black text-ink">
@@ -118,8 +117,9 @@ export default function ContactPage() {
               </li>
             </Stagger>
           </Reveal>
+        </div>
 
-          <Reveal as="section" aria-labelledby="support-title" className="rounded-card border border-line bg-surface p-5 shadow-card sm:p-6">
+        <Reveal as="section" delay={120} aria-labelledby="support-title" className="rounded-card border border-line bg-surface p-5 shadow-card sm:p-6">
             <h2 id="support-title" className="text-lg font-black text-ink">
               پشتیبانی لرناموز چطور کار می‌کند؟
             </h2>
@@ -143,29 +143,6 @@ export default function ContactPage() {
                 <span>ربات شبانه‌روز در دسترس است و تیم پشتیبانی در اسرع وقت پاسخ می‌دهد.</span>
               </li>
             </ul>
-          </Reveal>
-        </div>
-
-        <Reveal
-          as="section"
-          delay={120}
-          aria-labelledby="form-title"
-          className="rounded-[2rem] border border-line bg-surface p-6 shadow-card sm:p-10"
-        >
-          <h2 id="form-title" className="text-2xl font-black text-ink">
-            ارسال پیام
-          </h2>
-          <p className="mb-6 mt-2 leading-7 text-ink-2">
-            پیام شما مستقیم به تیم لرناموز می‌رسد و با شماره‌ای که وارد می‌کنید با شما تماس می‌گیریم.
-          </p>
-          <ContactForm
-            fields={contact.form.fields}
-            submitLabel={contact.form.submitLabel}
-            bale={bale}
-            baleHandle={baleHandle}
-            telegram={telegram}
-            telegramHandle={telegramHandle}
-          />
         </Reveal>
       </div>
 

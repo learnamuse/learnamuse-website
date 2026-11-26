@@ -43,39 +43,6 @@
     "closing": "ما از اینکه بخشی از صنعت آموزش هستیم خوشحالیم و منتظریم تا تأثیر فناوری بر جهان رو شاهد باشیم. سپاس برای بازدید از این صفحه!"
   },
   "contact": {
-    "title": "ارتباط با ما",
-    "form": {
-      "fields": [
-        {
-          "key": "name",
-          "type": "text",
-          "label": "نام",
-          "placeholder": "نام یا نام مستعار",
-          "required": true
-        },
-        {
-          "key": "phone",
-          "type": "tel",
-          "label": "شماره همراه",
-          "placeholder": "مثلاً ۰۹۱۲۳۴۵۶۷۸۹",
-          "required": true
-        },
-        {
-          "key": "message",
-          "type": "textarea",
-          "label": "پیام",
-          "placeholder": "متن پیام",
-          "required": false
-        },
-        {
-          "key": "wantsCollaboration",
-          "type": "checkbox",
-          "label": "تمایل به همکاری در حوزه آموزشی دارم.",
-          "placeholder": "",
-          "required": false
-        }
-      ],
-      "submitLabel": "ارسال"
-    }
+    "title": "ارتباط با ما"
   }
 }

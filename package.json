@@ -13,8 +13,7 @@
     "images": "node scripts/optimize-images.mjs",
     "images:unused": "node scripts/find-unused-images.mjs",
     "validate": "tsx scripts/validate-content.ts",
-    "cert:add": "tsx scripts/add-certificate.ts",
-    "worker:test": "npm --prefix worker test"
+    "cert:add": "tsx scripts/add-certificate.ts"
   },
   "dependencies": {
     "next": "16.4.6",

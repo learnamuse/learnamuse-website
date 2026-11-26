@@ -1,9 +1,0 @@
-# Copy to .dev.vars for `npm run dev` (wrangler dev). Never commit .dev.vars.
-BALE_BOT_TOKEN=123456789:fake-bale-token
-BALE_CHAT_ID=1234567890
-# Point at a local fake Bale API (see README "End-to-end test") instead of the real one:
-# BALE_API_BASE=http://127.0.0.1:8788
-# Optional secondary channel:
-# TELEGRAM_BOT_TOKEN=123456:ABC...
-# TELEGRAM_CHAT_ID=-1001234567890
-# TURNSTILE_SECRET=1x0000000000000000000000000000000AA

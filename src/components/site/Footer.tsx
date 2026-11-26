@@ -43,7 +43,7 @@ export function Footer() {
                 href="/contact-us/"
                 className={`inline-flex items-center gap-2 rounded-full border border-brand/40 bg-white px-5 py-3 font-bold text-ink hover:border-brand hover:text-brand-strong ${pressable}`}
               >
-                فرم تماس
+                راه‌های ارتباطی
                 <ArrowForward className="size-4" />
               </Link>
             </div>
