@@ -11,6 +11,8 @@ const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const nextConfig: NextConfig = {
   output: "export",
+  // Separate build dirs let several agents/devs build at once (export output goes here too).
+  distDir: process.env.NEXT_DIST_DIR || undefined,
   trailingSlash: true, // keep the WordPress-era URLs: /about-us/, /certificates/aitoolbox/<slug>/
   basePath: basePath || undefined,
   images: {
