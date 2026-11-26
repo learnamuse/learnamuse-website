@@ -38,7 +38,7 @@ export function PageHeader({
             fill
             preload
             sizes="100vw"
-            className="object-cover"
+            className="motion-settle object-cover"
             style={{ objectPosition: image.position ?? "center" }}
           />
           {/* Scrim: solid white behind the text (right in RTL), fading out toward the photo's subject. */}
@@ -53,7 +53,7 @@ export function PageHeader({
           <Diamond className="pointer-events-none absolute -end-10 -top-12 size-56 text-brand opacity-[0.07]" />
         </>
       )}
-      <div className={`${container} relative ${image ? "py-14 sm:py-20 lg:py-24" : "py-12 sm:py-16"}`}>
+      <div className={`${container} motion-enter relative ${image ? "py-14 sm:py-20 lg:py-24" : "py-12 sm:py-16"}`}>
         {children}
         {eyebrow && (
           <p className="mb-3 flex items-center gap-2 text-sm font-bold text-brand-strong">

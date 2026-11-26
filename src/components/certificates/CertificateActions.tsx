@@ -2,20 +2,28 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Printer, LinkIcon, Share, Check } from "@/components/ui/icons";
+import { pressable } from "@/components/ui/styles";
 
-const btn =
-  "inline-flex items-center justify-center gap-2 rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-bold text-ink transition-colors hover:border-brand hover:bg-brand-soft";
+const btn = `inline-flex items-center justify-center gap-2 rounded-full border border-line bg-surface px-4 py-2.5 text-sm font-bold text-ink hover:border-brand hover:bg-brand-soft ${pressable}`;
 
 export function CertificateActions({ url, title, text }: { url: string; title: string; text: string }) {
   const [message, setMessage] = useState("");
+  const [copied, setCopied] = useState(false);
+  // Bumped on every flash so the confirmation re-animates even when the text is the same.
+  const [flashId, setFlashId] = useState(0);
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
-  const flash = (m: string) => {
+  const flash = (m: string, ok = true) => {
     setMessage(m);
+    setCopied(ok);
+    setFlashId((n) => n + 1);
     clearTimeout(timer.current);
-    timer.current = setTimeout(() => setMessage(""), 3000);
+    timer.current = setTimeout(() => {
+      setMessage("");
+      setCopied(false);
+    }, 3000);
   };
 
   async function copy() {
@@ -33,7 +41,7 @@ export function CertificateActions({ url, title, text }: { url: string; title: s
       ta.select();
       const ok = document.execCommand("copy");
       ta.remove();
-      flash(ok ? "پیوند گواهی کپی شد." : "کپی نشد؛ لطفاً نشانی را از نوار مرورگر بردارید.");
+      flash(ok ? "پیوند گواهی کپی شد." : "کپی نشد؛ لطفاً نشانی را از نوار مرورگر بردارید.", ok);
     }
   }
 
@@ -55,8 +63,10 @@ export function CertificateActions({ url, title, text }: { url: string; title: s
         <Printer className="size-5 text-brand-strong" />
         چاپ یا PDF
       </button>
-      <button type="button" onClick={copy} className={btn}>
-        <LinkIcon className="size-5 text-brand-strong" />
+      <button type="button" onClick={copy} className={`${btn} ${copied ? "border-brand bg-brand-soft" : ""}`}>
+        <span key={copied ? "done" : "idle"} className={`inline-flex ${copied ? "icon-swap" : ""}`}>
+          {copied ? <Check className="size-5 text-brand-strong" /> : <LinkIcon className="size-5 text-brand-strong" />}
+        </span>
         کپی پیوند
       </button>
       <button type="button" onClick={share} className={btn}>
@@ -65,7 +75,7 @@ export function CertificateActions({ url, title, text }: { url: string; title: s
       </button>
       <p role="status" aria-live="polite" className="min-h-6 text-sm font-semibold text-brand-strong">
         {message && (
-          <span className="inline-flex items-center gap-1.5">
+          <span key={flashId} className="motion-fade-in inline-flex items-center gap-1.5">
             <Check className="size-4" />
             {message}
           </span>

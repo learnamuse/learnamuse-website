@@ -127,7 +127,7 @@ export function CertificateDocument({
                 width={250}
                 height={250}
                 sizes="(min-width: 768px) 112px, 80px"
-                className="size-20 drop-shadow-md @2xl:size-[8.5cqw]"
+                className="motion-pop-in size-20 drop-shadow-md [--enter-base:700ms] @2xl:size-[8.5cqw]"
               />
             </div>
 
@@ -139,7 +139,7 @@ export function CertificateDocument({
                 </p>
               </div>
               <div
-                className="size-16 shrink-0 rounded-md bg-white p-1 ring-1 ring-line @2xl:size-[7.5cqw] @2xl:rounded-[0.5cqw] @2xl:p-[0.5cqw] [&>svg]:size-full"
+                className="motion-pop-in size-16 shrink-0 rounded-md bg-white p-1 ring-1 ring-line [--enter-base:850ms] @2xl:size-[7.5cqw] @2xl:rounded-[0.5cqw] @2xl:p-[0.5cqw] [&>svg]:size-full"
                 role="img"
                 aria-label={`کد QR نشانی اعتبارسنجی: ${verifyUrl}`}
                 dangerouslySetInnerHTML={{ __html: qrSvg }}

@@ -71,7 +71,7 @@ export function CertificateSearch({ entries }: { entries: SearchEntry[] }) {
         <label htmlFor="cert-q" className="mb-3 block text-base font-bold text-ink">
           نام دارندهٔ گواهی را بنویسید
         </label>
-        <div className="flex items-center gap-2 rounded-2xl border border-line bg-surface p-2 shadow-card focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/40 sm:rounded-full">
+        <div className="flex items-center gap-2 rounded-2xl border border-line bg-surface p-2 shadow-card transition-[border-color,box-shadow] duration-200 ease-out focus-within:border-brand focus-within:ring-2 focus-within:ring-brand/40 sm:rounded-full">
           <Search className="ms-3 size-6 shrink-0 text-ink-3" />
           <input
             id="cert-q"
@@ -123,11 +123,11 @@ export function CertificateSearch({ entries }: { entries: SearchEntry[] }) {
 
         {results.length > 0 && (
           <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-            {results.map((r) => (
-              <li key={r.route}>
+            {results.map((r, i) => (
+              <li key={r.route} className="motion-fade-in" style={{ animationDelay: `${Math.min(i, 6) * 40}ms` }}>
                 <Link
                   href={r.route}
-                  className="group flex items-center gap-4 rounded-card border border-line bg-surface p-4 shadow-card transition-colors hover:border-brand sm:p-5"
+                  className="group flex items-center gap-4 rounded-card border border-line bg-surface p-4 shadow-card transition-[translate,box-shadow,border-color] duration-300 ease-out hover:border-brand hover:shadow-lift motion-safe:hover:-translate-y-0.5 sm:p-5"
                 >
                   <span className="relative inline-flex size-12 shrink-0 items-center justify-center text-gold">
                     <Diamond className="absolute inset-0 size-12 opacity-30" />

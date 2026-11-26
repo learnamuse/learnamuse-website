@@ -5,7 +5,8 @@ import { getCourses, getCertificates, courseRoute, site } from "@/lib/content";
 import { ogBase } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/url";
 import { PageHeader } from "@/components/ui/PageHeader";
-import { container } from "@/components/ui/styles";
+import { container, cardLift } from "@/components/ui/styles";
+import { Reveal, Stagger } from "@/components/motion/Reveal";
 import { faDigits, faNumber } from "@/components/ui/format";
 import { Calendar, Clock, Users, ArrowForward, School } from "@/components/ui/icons";
 import { CertificateSearch, type SearchEntry } from "@/components/certificates/CertificateSearch";
@@ -46,30 +47,37 @@ export default function CertificatesPage() {
       />
 
       <section aria-label="جست‌وجوی گواهی" className="py-12 sm:py-16">
-        <div className={`${container} max-w-3xl`}>
+        <Reveal className={`${container} max-w-3xl`}>
           <CertificateSearch entries={entries} />
-        </div>
+        </Reveal>
       </section>
 
       <section aria-labelledby="courses-title" className="pb-8">
         <div className={container}>
-          <div className="flex items-end justify-between gap-4 border-b border-line pb-4">
+          <Reveal className="flex items-end justify-between gap-4 border-b border-line pb-4">
             <h2 id="courses-title" className="text-2xl font-black text-ink">
               دوره‌ها و کارگاه‌ها
             </h2>
             <span className="text-sm text-ink-3">{faNumber(courses.length)} دوره</span>
-          </div>
-          <ul className="mt-8 grid gap-6 md:grid-cols-2">
+          </Reveal>
+          <Stagger as="ul" step={100} className="mt-8 grid gap-6 md:grid-cols-2">
             {courses.map((course) => {
               const count = getCertificates(course.slug).length;
               return (
                 <li key={course.slug}>
                   <Link
                     href={courseRoute(course.slug)}
-                    className="group relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface p-6 shadow-card transition-colors hover:border-brand sm:p-8"
+                    className={`group relative flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface p-6 shadow-card hover:border-brand sm:p-8 ${cardLift}`}
                   >
                     <div className="flex items-start gap-4">
-                      <Image src={course.badge} alt="" width={250} height={250} sizes="64px" className="size-16 shrink-0" />
+                      <Image
+                        src={course.badge}
+                        alt=""
+                        width={250}
+                        height={250}
+                        sizes="64px"
+                        className="size-16 shrink-0 transition-[rotate,scale] duration-500 ease-out motion-safe:group-hover:scale-105 motion-safe:group-hover:-rotate-6"
+                      />
                       <div className="min-w-0">
                         <p lang="en" dir="ltr" className="text-end text-xs font-bold uppercase tracking-widest text-brand-strong">
                           {course.titleEn}
@@ -112,7 +120,7 @@ export default function CertificatesPage() {
                 </li>
               );
             })}
-          </ul>
+          </Stagger>
         </div>
       </section>
     </>

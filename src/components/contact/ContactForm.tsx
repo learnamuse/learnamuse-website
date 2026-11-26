@@ -11,6 +11,7 @@ import {
 } from "@/lib/contact-client";
 import { Check, Telegram, External } from "@/components/ui/icons";
 import { BaleIcon } from "./BaleIcon";
+import { pressable } from "@/components/ui/styles";
 
 export type FieldDef = {
   key: "name" | "phone" | "message" | "wantsCollaboration";
@@ -48,7 +49,7 @@ function ChannelButtons({ bale, telegram, compact = false }: { bale: string; tel
       <a
         href={bale}
         {...NEW_TAB}
-        className={`inline-flex items-center gap-2 rounded-full bg-brand font-bold text-brand-ink transition-colors hover:bg-brand-strong hover:text-white ${size}`}
+        className={`inline-flex items-center gap-2 rounded-full bg-brand font-bold text-brand-ink hover:bg-brand-strong hover:text-white ${pressable} ${size}`}
       >
         <BaleIcon className="size-5" />
         گفتگو با ربات لرناموز در بله
@@ -58,7 +59,7 @@ function ChannelButtons({ bale, telegram, compact = false }: { bale: string; tel
       <a
         href={telegram}
         {...NEW_TAB}
-        className={`inline-flex items-center gap-2 rounded-full border border-line bg-surface font-bold text-ink transition-colors hover:border-brand hover:bg-brand-soft ${size}`}
+        className={`inline-flex items-center gap-2 rounded-full border border-line bg-surface font-bold text-ink hover:border-brand hover:bg-brand-soft ${pressable} ${size}`}
       >
         <Telegram className="size-5 text-brand-strong" />
         تلگرام
@@ -209,9 +210,9 @@ export function ContactForm({
         ref={statusRef}
         tabIndex={-1}
         role="status"
-        className="flex flex-col items-center rounded-card border border-brand/40 bg-brand-soft px-6 py-12 text-center outline-none"
+        className="motion-success flex flex-col items-center rounded-card border border-brand/40 bg-brand-soft px-6 py-12 text-center outline-none"
       >
-        <span className="inline-flex size-16 items-center justify-center rounded-full bg-brand text-brand-ink">
+        <span className="motion-success-icon inline-flex size-16 items-center justify-center rounded-full bg-brand text-brand-ink">
           <Check className="size-8" />
         </span>
         <h2 className="mt-5 text-2xl font-black text-ink">پیام‌تان رسید!</h2>
@@ -239,7 +240,7 @@ export function ContactForm({
   const fieldId = (k: string) => `${uid}-${k}`;
   const errId = (k: string) => `${uid}-${k}-error`;
   const inputCls = (invalid: boolean) =>
-    `mt-2 block w-full rounded-2xl border bg-surface px-4 py-3 text-base text-ink placeholder:text-ink-3 transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/40 ${
+    `mt-2 block w-full rounded-2xl border bg-surface px-4 py-3 text-base text-ink placeholder:text-ink-3 transition-[border-color,box-shadow,background-color] duration-200 ease-out hover:border-brand/50 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/40 ${
       invalid ? "border-red-600" : "border-line"
     }`;
 
@@ -315,7 +316,7 @@ export function ContactForm({
               />
             )}
             {err && (
-              <p id={errId(k)} className="mt-2 flex items-center gap-1.5 text-sm font-semibold text-red-700">
+              <p id={errId(k)} className="motion-fade-in mt-2 flex items-center gap-1.5 text-sm font-semibold text-red-700">
                 <span aria-hidden="true">●</span>
                 {err}
               </p>
@@ -342,7 +343,7 @@ export function ContactForm({
 
       <div ref={statusRef} tabIndex={-1} aria-live="polite" className="outline-none">
         {status === "error" && formError && (
-          <div role="alert" className="rounded-2xl border border-red-300 bg-red-50 p-4 text-sm leading-7 text-red-800">
+          <div role="alert" className="motion-fade-in rounded-2xl border border-red-300 bg-red-50 p-4 text-sm leading-7 text-red-800">
             <p className="font-bold">{formError}</p>
             <p className="mb-3 mt-1">می‌توانید پیام‌تان را از این راه‌ها هم بفرستید:</p>
             <ChannelButtons bale={bale} telegram={telegram} compact />
@@ -354,7 +355,7 @@ export function ContactForm({
         type="submit"
         disabled={status === "submitting"}
         aria-busy={status === "submitting"}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 text-base font-bold text-brand-ink transition-colors hover:bg-brand-strong hover:text-white disabled:cursor-wait disabled:opacity-70 sm:w-auto sm:min-w-44"
+        className={`inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand px-6 py-3.5 text-base font-bold text-brand-ink hover:bg-brand-strong hover:text-white hover:shadow-lift-brand disabled:cursor-wait disabled:translate-y-0 disabled:opacity-70 sm:w-auto sm:min-w-44 ${pressable}`}
       >
         {status === "submitting" ? (
           <>

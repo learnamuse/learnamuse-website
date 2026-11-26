@@ -55,7 +55,8 @@ export function Bear({
 }) {
   const p = BEAR_POSES[pose];
   return (
-    <div className={className}>
+    // Pops in once when it scrolls into view (shared reveal system); the inner div keeps bobbing.
+    <div data-reveal="pop" className={className}>
       <div className="relative">
         <div className={`${styles.float} ${slow ? styles.floatSlow : ""}`}>
           <Image

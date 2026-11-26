@@ -10,7 +10,7 @@ import { ArrowForward, Check, External, ShieldCheck, School } from "@/components
 import { Bear } from "@/components/bot/Bear";
 import { ChatDemo } from "@/components/bot/ChatDemo";
 import { RoleTabs } from "@/components/bot/RoleTabs";
-import { Reveal } from "@/components/bot/Reveal";
+import { Reveal, Stagger } from "@/components/motion/Reveal";
 import styles from "@/components/bot/bot.module.css";
 
 const ROUTE = "/bale-bot/";
@@ -61,7 +61,7 @@ function SectionHead({
   center?: boolean;
 }) {
   return (
-    <div className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
+    <Reveal className={center ? "mx-auto max-w-2xl text-center" : "max-w-2xl"}>
       <p className={eyebrowCls}>
         <Diamond className="size-3" />
         {eyebrow}
@@ -70,7 +70,7 @@ function SectionHead({
         {title}
       </h2>
       {lead && <p className="mt-4 text-base leading-8 text-ink-2 sm:text-lg">{lead}</p>}
-    </div>
+    </Reveal>
   );
 }
 
@@ -88,7 +88,7 @@ export default function BaleBotPage() {
         </div>
 
         <div className={`${container} grid items-center gap-12 pb-16 pt-10 sm:pt-14 lg:grid-cols-[1.08fr_1fr] lg:gap-8 lg:pb-24 lg:pt-16`}>
-          <div className="text-center lg:text-start">
+          <div className="motion-enter text-center lg:text-start">
             <p className={eyebrowCls}>
               <Diamond className="size-3" />
               {hero.eyebrow}
@@ -141,7 +141,7 @@ export default function BaleBotPage() {
           </div>
 
           {/* phone with the animated chat, and the bear waving beside it */}
-          <div className="flex items-end justify-center">
+          <div className="motion-enter flex items-end justify-center [--enter-base:260ms] [--enter-step:160ms]">
             <ChatDemo chat={chat} logo={site.logo.mark} className="w-[14.75rem] flex-none sm:w-[19rem] lg:w-[20rem]" />
             {/* RTL: the phone comes first (right), the bear stands at its left, overlapping only the frame */}
             <Bear
@@ -308,9 +308,12 @@ export default function BaleBotPage() {
       <section aria-labelledby="faq-title" className="py-16 sm:py-24">
         <div className={`${container} max-w-3xl`}>
           <SectionHead id="faq-title" eyebrow={faq.eyebrow} title={faq.title} />
-          <div className="mt-10 space-y-3">
+          <Stagger className="mt-10 space-y-3" step={60}>
             {faq.items.map((f) => (
-              <details key={f.q} className="group rounded-card border border-line bg-surface shadow-card open:border-brand/50">
+              <details
+                key={f.q}
+                className="faq group rounded-card border border-line bg-surface shadow-card transition-colors duration-300 open:border-brand/50"
+              >
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 text-start font-bold text-ink sm:text-lg [&::-webkit-details-marker]:hidden">
                   {f.q}
                   <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand-strong">
@@ -341,7 +344,7 @@ export default function BaleBotPage() {
                 </div>
               </details>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
 

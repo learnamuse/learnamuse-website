@@ -32,6 +32,8 @@
 
   --radius: 1.25rem;
   --shadow: 0 1px 2px rgb(20 24 15 / 0.04), 0 8px 24px -8px rgb(20 24 15 / 0.10);
+  --lift: 0 2px 4px rgb(20 24 15 / 0.04), 0 18px 40px -14px rgb(20 24 15 / 0.22);
+  --lift-brand: 0 10px 24px -10px rgb(64 124 23 / 0.5);
 }
 
 @theme inline {
@@ -50,6 +52,8 @@
   --color-line: var(--line);
   --radius-card: var(--radius);
   --shadow-card: var(--shadow);
+  --shadow-lift: var(--lift);
+  --shadow-lift-brand: var(--lift-brand);
   --font-sans: var(--font-vazirmatn), ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -150,6 +154,8 @@ body {
     --ink-3: #7a8270;
     --line: #e3e7da;
     --shadow: none;
+    --lift: none;
+    --lift-brand: none;
   }
   html,
   body {

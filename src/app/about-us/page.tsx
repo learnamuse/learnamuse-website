@@ -9,6 +9,7 @@ import { Diamond } from "@/components/ui/Diamond";
 import { container, btnPrimary, btnSecondary } from "@/components/ui/styles";
 import { faNumber } from "@/components/ui/format";
 import { Bolt, HandHeart, Inclusive, ArrowForward } from "@/components/ui/icons";
+import { Reveal, Stagger } from "@/components/motion/Reveal";
 
 const about = pages.about;
 
@@ -41,13 +42,13 @@ export default function AboutPage() {
           <h2 id="values-title" className="sr-only">
             اهداف و ارزش‌های ما
           </h2>
-          <ol className="grid gap-6 md:grid-cols-3">
+          <Stagger as="ol" step={110} className="grid gap-6 md:grid-cols-3">
             {about.values.map((v, i) => {
               const s = VALUE_STYLES[i % VALUE_STYLES.length];
               return (
                 <li
                   key={v.title}
-                  className="group relative flex flex-col overflow-hidden rounded-card border border-line bg-surface p-7 shadow-card transition-transform duration-300 hover:-translate-y-1 sm:p-8"
+                  className="group relative flex flex-col overflow-hidden rounded-card border border-line bg-surface p-7 shadow-card transition-[translate,box-shadow] duration-300 ease-out hover:shadow-lift motion-safe:hover:-translate-y-1 sm:p-8"
                 >
                   <span className={`absolute inset-x-0 top-0 h-1.5 ${s.bar}`} aria-hidden="true" />
                   <Diamond
@@ -66,13 +67,13 @@ export default function AboutPage() {
                 </li>
               );
             })}
-          </ol>
+          </Stagger>
         </div>
       </section>
 
       <section aria-label="سخن پایانی" className="pb-4">
         <div className={container}>
-          <figure className="relative mx-auto max-w-3xl overflow-hidden rounded-[2rem] border border-line bg-brand-soft px-6 py-10 text-center sm:px-12 sm:py-14">
+          <Reveal as="figure" className="relative mx-auto max-w-3xl overflow-hidden rounded-[2rem] border border-line bg-brand-soft px-6 py-10 text-center sm:px-12 sm:py-14">
             <div className="motif-lattice absolute inset-0 opacity-20" aria-hidden="true" />
             <Image
               src={site.logo.mark}
@@ -95,7 +96,7 @@ export default function AboutPage() {
                 گواهی‌ها
               </Link>
             </div>
-          </figure>
+          </Reveal>
         </div>
       </section>
     </>

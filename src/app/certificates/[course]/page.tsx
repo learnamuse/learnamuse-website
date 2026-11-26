@@ -5,7 +5,8 @@ import { notFound } from "next/navigation";
 import { getCourses, getCourse, getCertificates, courseRoute, site } from "@/lib/content";
 import { ogBase } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/url";
-import { container } from "@/components/ui/styles";
+import { container, cardLift } from "@/components/ui/styles";
+import { Reveal, Stagger } from "@/components/motion/Reveal";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Diamond, DiamondRule } from "@/components/ui/Diamond";
 import { faDigits, faNumber } from "@/components/ui/format";
@@ -55,7 +56,7 @@ export default async function CoursePage({ params }: PageProps<"/certificates/[c
     <>
       <header className="relative overflow-hidden border-b border-line bg-surface-2/60">
         <div className="motif-lattice absolute inset-0 opacity-20" aria-hidden="true" />
-        <div className={`${container} relative py-10 sm:py-14`}>
+        <div className={`${container} motion-enter relative py-10 sm:py-14`}>
           <Breadcrumbs
             items={[
               { label: "خانه", href: "/" },
@@ -105,11 +106,13 @@ export default async function CoursePage({ params }: PageProps<"/certificates/[c
       {/* Tools */}
       <section aria-labelledby="tools-title" className="py-14 sm:py-16">
         <div className={container}>
-          <h2 id="tools-title" className="text-2xl font-black text-ink">
-            ابزارهایی که آموزش داده شد
-          </h2>
-          <p className="mt-2 text-ink-2">کار عملی با {faNumber(course.tools.length)} ابزار هوش مصنوعی برای آموزش و تولید محتوا.</p>
-          <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <Reveal>
+            <h2 id="tools-title" className="text-2xl font-black text-ink">
+              ابزارهایی که آموزش داده شد
+            </h2>
+            <p className="mt-2 text-ink-2">کار عملی با {faNumber(course.tools.length)} ابزار هوش مصنوعی برای آموزش و تولید محتوا.</p>
+          </Reveal>
+          <Stagger as="ul" variant="pop" step={45} max={8} className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {course.tools.map((t) => (
               <li key={t.name} className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3 sm:p-4">
                 <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5 ring-1 ring-line">
@@ -120,14 +123,14 @@ export default async function CoursePage({ params }: PageProps<"/certificates/[c
                 </span>
               </li>
             ))}
-          </ul>
+          </Stagger>
         </div>
       </section>
 
       {/* Graduates */}
       <section aria-labelledby="grads-title" className="border-t border-line bg-surface-2/40 py-14 sm:py-16">
         <div className={container}>
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <Reveal className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <h2 id="grads-title" className="text-2xl font-black text-ink">
                 دانش‌آموختگان
@@ -139,14 +142,15 @@ export default async function CoursePage({ params }: PageProps<"/certificates/[c
             <div className="lg:w-96">
               <VerifyForm id="course-verify" compact />
             </div>
-          </div>
+          </Reveal>
 
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Each card reveals as it enters; cards entering together cascade (capped), so long lists never lag. */}
+          <Stagger as="ul" step={80} max={5} className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {graduates.map((g) => (
               <li key={g.slug}>
                 <Link
                   href={g.route}
-                  className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-card transition-all hover:-translate-y-0.5 hover:border-brand"
+                  className={`group flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface shadow-card hover:border-brand ${cardLift}`}
                 >
                   <div className="relative aspect-[1920/1357] overflow-hidden border-b border-line bg-surface-2">
                     {g.photo ? (
@@ -178,7 +182,7 @@ export default async function CoursePage({ params }: PageProps<"/certificates/[c
                 </Link>
               </li>
             ))}
-          </ul>
+          </Stagger>
           <DiamondRule className="mt-14" />
         </div>
       </section>

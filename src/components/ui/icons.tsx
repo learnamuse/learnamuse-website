@@ -23,13 +23,13 @@ function Svg({ className = "size-5", children, ...rest }: IconProps) {
 
 /** Points "forward" in RTL reading direction (i.e. to the left). */
 export const ArrowForward = (p: IconProps) => (
-  <Svg {...p}>
+  <Svg data-icon="forward" {...p}>
     <path d="M19 12H5M11 6l-6 6 6 6" />
   </Svg>
 );
 /** Points "back" in RTL (to the right). */
 export const ArrowBack = (p: IconProps) => (
-  <Svg {...p}>
+  <Svg data-icon="back" {...p}>
     <path d="M5 12h14M13 6l6 6-6 6" />
   </Svg>
 );

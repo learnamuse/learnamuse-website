@@ -13,6 +13,7 @@ import { faDigits } from "@/components/ui/format";
 import { ShieldCheck, ArrowBack, External } from "@/components/ui/icons";
 import { CertificateDocument } from "@/components/certificates/CertificateDocument";
 import { CertificateActions } from "@/components/certificates/CertificateActions";
+import { Stagger } from "@/components/motion/Reveal";
 
 export const dynamicParams = false;
 
@@ -90,7 +91,7 @@ export default async function CertificatePage({ params }: Props) {
     <div className={`${container} py-8 sm:py-12 print:max-w-none print:p-0`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
 
-      <div className="print:hidden">
+      <div className="motion-enter print:hidden">
         <Breadcrumbs
           items={[
             { label: "خانه", href: "/" },
@@ -122,11 +123,12 @@ export default async function CertificatePage({ params }: Props) {
         </div>
       </div>
 
-      <div className="mt-8 print:mt-0">
+      {/* The sheet rises in gently; its badge and QR code pop a moment later (motion is off in print). */}
+      <div className="motion-rise mt-8 [--enter-base:200ms] print:mt-0">
         <CertificateDocument cert={cert} verifyUrl={verifyUrl} qrSvg={qrSvg} />
       </div>
 
-      <div className="mt-12 grid gap-8 lg:grid-cols-[1.25fr_0.75fr] print:hidden">
+      <Stagger step={120} className="mt-12 grid gap-8 lg:grid-cols-[1.25fr_0.75fr] print:hidden">
         {cert.photo && (
           <figure>
             <div className="rounded-[1.75rem] border border-line bg-surface p-2.5 shadow-card sm:p-3">
@@ -183,7 +185,7 @@ export default async function CertificatePage({ params }: Props) {
             بازگشت به صفحهٔ دوره
           </Link>
         </aside>
-      </div>
+      </Stagger>
     </div>
   );
 }

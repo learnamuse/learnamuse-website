@@ -9,7 +9,10 @@ import { NavLinks, MobileMenu } from "./NavClient";
 export function Header() {
   const items = getNavItems();
   return (
-    <header className="sticky top-0 z-40 border-b border-line/80 bg-bg/85 backdrop-blur-md supports-[backdrop-filter]:bg-bg/70 print:hidden">
+    <header
+      data-site-header
+      style={{ viewTransitionName: "site-header" }}
+      className="sticky top-0 z-40 border-b border-line/80 bg-bg/85 backdrop-blur-md supports-[backdrop-filter]:bg-bg/70 print:hidden">
       <div className={`${container} flex h-16 items-center justify-between gap-4 sm:h-[4.5rem]`}>
         <Link href="/" className="flex shrink-0 items-center rounded-lg" aria-label={`${site.name} — صفحهٔ اصلی`}>
           <Image
@@ -19,7 +22,7 @@ export function Header() {
             height={655}
             sizes="128px"
             preload
-            className="h-9 w-auto sm:h-10"
+            className="motion-logo h-9 w-auto sm:h-10"
           />
         </Link>
 

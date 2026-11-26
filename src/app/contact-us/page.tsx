@@ -7,6 +7,8 @@ import { container } from "@/components/ui/styles";
 import { Telegram, External, Users, School, HandHeart, Clock, ShieldCheck } from "@/components/ui/icons";
 import { BaleIcon } from "@/components/contact/BaleIcon";
 import { ContactForm } from "@/components/contact/ContactForm";
+import { Reveal, Stagger } from "@/components/motion/Reveal";
+import { cardLift } from "@/components/ui/styles";
 
 const contact = pages.contact;
 const description =
@@ -59,16 +61,16 @@ export default function ContactPage() {
 
       <div className={`${container} grid gap-8 py-12 sm:py-16 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12`}>
         <div className="space-y-8">
-          <section aria-labelledby="channels-title">
+          <Reveal as="section" aria-labelledby="channels-title">
             <h2 id="channels-title" className="text-lg font-black text-ink">
               راه‌های ارتباطی
             </h2>
-            <ul className="mt-4 space-y-4">
+            <Stagger as="ul" step={100} className="mt-4 space-y-4">
               <li>
                 <a
                   href={bale}
                   {...NEW_TAB}
-                  className="group block rounded-card border-2 border-brand/60 bg-brand-soft p-5 shadow-card transition-colors hover:border-brand-strong"
+                  className={`group block rounded-card border-2 border-brand/60 bg-brand-soft p-5 shadow-card hover:border-brand-strong ${cardLift}`}
                 >
                   <span className="flex items-center gap-4">
                     <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-brand text-brand-ink">
@@ -98,7 +100,7 @@ export default function ContactPage() {
                 <a
                   href={telegram}
                   {...NEW_TAB}
-                  className="group flex items-center gap-4 rounded-card border border-line bg-surface p-5 shadow-card transition-colors hover:border-brand"
+                  className={`group flex items-center gap-4 rounded-card border border-line bg-surface p-5 shadow-card hover:border-brand ${cardLift}`}
                 >
                   <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-2xl bg-surface-2 text-brand-strong">
                     <Telegram className="size-6" />
@@ -114,10 +116,10 @@ export default function ContactPage() {
                   <span className="sr-only">(در پنجرهٔ جدید باز می‌شود)</span>
                 </a>
               </li>
-            </ul>
-          </section>
+            </Stagger>
+          </Reveal>
 
-          <section aria-labelledby="support-title" className="rounded-card border border-line bg-surface p-5 shadow-card sm:p-6">
+          <Reveal as="section" aria-labelledby="support-title" className="rounded-card border border-line bg-surface p-5 shadow-card sm:p-6">
             <h2 id="support-title" className="text-lg font-black text-ink">
               پشتیبانی لرناموز چطور کار می‌کند؟
             </h2>
@@ -141,10 +143,15 @@ export default function ContactPage() {
                 <span>ربات شبانه‌روز در دسترس است و تیم پشتیبانی در اسرع وقت پاسخ می‌دهد.</span>
               </li>
             </ul>
-          </section>
+          </Reveal>
         </div>
 
-        <section aria-labelledby="form-title" className="rounded-[2rem] border border-line bg-surface p-6 shadow-card sm:p-10">
+        <Reveal
+          as="section"
+          delay={120}
+          aria-labelledby="form-title"
+          className="rounded-[2rem] border border-line bg-surface p-6 shadow-card sm:p-10"
+        >
           <h2 id="form-title" className="text-2xl font-black text-ink">
             ارسال پیام
           </h2>
@@ -159,15 +166,15 @@ export default function ContactPage() {
             telegram={telegram}
             telegramHandle={telegramHandle}
           />
-        </section>
+        </Reveal>
       </div>
 
       <section aria-labelledby="topics-title" className="border-t border-line bg-surface-2/60">
         <div className={`${container} py-12 sm:py-16`}>
-          <h2 id="topics-title" className="text-2xl font-black text-ink">
+          <Reveal as="h2" id="topics-title" className="text-2xl font-black text-ink">
             دربارهٔ چه چیزی با ما در ارتباط باشید؟
-          </h2>
-          <ul className="mt-6 grid gap-4 md:grid-cols-3">
+          </Reveal>
+          <Stagger as="ul" step={100} className="mt-6 grid gap-4 md:grid-cols-3">
             {topics.map((t) => (
               <li key={t.title} className="rounded-card border border-line bg-surface p-6 shadow-card">
                 <span className="inline-flex size-11 items-center justify-center rounded-2xl bg-brand-soft text-brand-strong">
@@ -177,7 +184,7 @@ export default function ContactPage() {
                 <p className="mt-2 text-sm leading-7 text-ink-2">{t.body}</p>
               </li>
             ))}
-          </ul>
+          </Stagger>
         </div>
       </section>
     </>

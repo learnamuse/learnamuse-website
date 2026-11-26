@@ -5,7 +5,10 @@ import { SITE_ORIGIN, BASE_PATH, asset } from "@/lib/url";
 import { ogBase } from "@/lib/seo";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { MotionRuntime } from "@/components/motion/MotionRuntime";
+import { PageTransition } from "@/components/motion/PageTransition";
 import "./globals.css";
+import "./motion.css";
 
 const vazirmatn = Vazirmatn({
   variable: "--font-vazirmatn",
@@ -28,7 +31,18 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fa" dir="rtl" className={`${vazirmatn.variable} h-full antialiased`}>
+    // data-scroll-behavior: Next turns off the CSS smooth scrolling while it resets scroll on a
+    // route change, so the view transition lands on the new page's top instead of gliding there.
+    // Inline view-transition-name "root" (the UA default): React only applies its "root not
+    // affected" shortcut (0×0 transition overlay) when this is empty, and in Chrome that shortcut
+    // blanked the page for the length of the route transition. With it set, the normal capture path runs.
+    <html
+      lang="fa"
+      dir="rtl"
+      data-scroll-behavior="smooth"
+      style={{ viewTransitionName: "root" }}
+      className={`${vazirmatn.variable} h-full antialiased`}
+    >
       <body className="flex min-h-full flex-col">
         <a
           href="#main"
@@ -38,9 +52,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </a>
         <Header />
         <main id="main" tabIndex={-1} className="flex-1 outline-none">
-          {children}
+          <PageTransition>{children}</PageTransition>
         </main>
         <Footer />
+        <MotionRuntime />
       </body>
     </html>
   );

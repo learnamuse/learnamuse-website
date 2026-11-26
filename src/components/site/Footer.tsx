@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/content";
 import { asset } from "@/lib/url";
-import { container } from "@/components/ui/styles";
+import { container, pressable } from "@/components/ui/styles";
 import { Diamond } from "@/components/ui/Diamond";
 import { Telegram, ArrowForward, ShieldCheck } from "@/components/ui/icons";
 import { BaleIcon } from "@/components/contact/BaleIcon";
@@ -33,7 +33,7 @@ export function Footer() {
                 href={site.contact.bale}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 font-bold text-brand-ink transition-colors hover:bg-brand-strong hover:text-white"
+                className={`inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 font-bold text-brand-ink hover:bg-brand-strong hover:text-white hover:shadow-lift-brand ${pressable}`}
               >
                 <BaleIcon className="size-5" />
                 گفتگو در بله
@@ -41,7 +41,7 @@ export function Footer() {
               </a>
               <Link
                 href="/contact-us/"
-                className="inline-flex items-center gap-2 rounded-full border border-brand/40 bg-white px-5 py-3 font-bold text-ink transition-colors hover:border-brand hover:text-brand-strong"
+                className={`inline-flex items-center gap-2 rounded-full border border-brand/40 bg-white px-5 py-3 font-bold text-ink hover:border-brand hover:text-brand-strong ${pressable}`}
               >
                 فرم تماس
                 <ArrowForward className="size-4" />
@@ -70,7 +70,7 @@ export function Footer() {
           <ul className="space-y-3">
             {items.map((i) => (
               <li key={i.route}>
-                <Link href={i.route} className="text-ink-2 hover:text-brand-strong">
+                <Link href={i.route} className="text-ink-2 transition-colors duration-200 hover:text-brand-strong">
                   {i.label}
                 </Link>
               </li>
@@ -113,7 +113,7 @@ export function Footer() {
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex size-10 items-center justify-center rounded-full border border-line bg-surface text-ink-2 transition-colors hover:border-brand hover:text-brand-strong"
+                    className={`inline-flex size-10 items-center justify-center rounded-full border border-line bg-surface text-ink-2 hover:border-brand hover:text-brand-strong ${pressable}`}
                   >
                     {/telegram/i.test(s.label) ? (
                       <Telegram className="size-5" />

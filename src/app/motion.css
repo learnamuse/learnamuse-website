@@ -1,0 +1,363 @@
+/*
+ * Learnamuse motion system. Calm, short, transform/opacity only.
+ *
+ * Rules every effect here follows:
+ * - Content is visible by default. Hidden "from" states exist only inside
+ *   `@media screen and (prefers-reduced-motion: no-preference)` and (for scroll reveals) only
+ *   after the client runtime has marked an element as below the fold.
+ * - Reduced motion: nothing moves, nothing is hidden (see also globals.css).
+ * - Print: every animation/transition is switched off and revealed elements forced visible.
+ */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  /* +1 in LTR, -1 in RTL: multiply any horizontal offset by this to keep motion direction-aware. */
+  --motion-dir: 1;
+}
+:root[dir="rtl"] {
+  --motion-dir: -1;
+}
+
+/* ---------------------------------------------------------------------------
+ * Keyframes
+ * ------------------------------------------------------------------------- */
+@keyframes motion-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+}
+@keyframes motion-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes motion-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+}
+@keyframes motion-settle {
+  from {
+    transform: scale(1.045);
+  }
+}
+@keyframes motion-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.045);
+  }
+}
+@keyframes motion-parallax {
+  to {
+    transform: translate3d(0, 64px, 0);
+  }
+}
+@keyframes motion-header-scrolled {
+  to {
+    background-color: rgb(255 255 255 / 0.94);
+    box-shadow: 0 10px 30px -18px rgb(20 24 15 / 0.28);
+    border-bottom-color: rgb(227 231 218 / 0.5);
+  }
+}
+@keyframes motion-logo-shrink {
+  to {
+    transform: scale(0.9);
+  }
+}
+@keyframes vt-page-exit {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes vt-page-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(calc(var(--motion-dir) * 14px), 6px, 0);
+  }
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* -------------------------------------------------------------------------
+   * Scroll reveal (<Reveal/>, <Stagger/>; state set by <MotionRuntime/>)
+   * ----------------------------------------------------------------------- */
+  [data-reveal] {
+    --reveal-from: translate3d(0, 24px, 0);
+  }
+  [data-reveal="fade"] {
+    --reveal-from: none;
+  }
+  [data-reveal="pop"] {
+    --reveal-from: translate3d(0, 12px, 0) scale(0.92);
+  }
+  @media (min-width: 768px) {
+    [data-reveal="start"] {
+      --reveal-from: translate3d(calc(var(--motion-dir) * -40px), 0, 0);
+    }
+    [data-reveal="end"] {
+      --reveal-from: translate3d(calc(var(--motion-dir) * 40px), 0, 0);
+    }
+  }
+  [data-reveal][data-motion="out"] {
+    opacity: 0;
+    transform: var(--reveal-from);
+  }
+  [data-reveal][data-motion="in"] {
+    transition:
+      opacity 0.7s var(--ease-out) var(--reveal-delay, 0ms),
+      transform 0.9s var(--ease-soft) var(--reveal-delay, 0ms);
+  }
+  [data-reveal="pop"][data-motion="in"] {
+    transition:
+      opacity 0.55s var(--ease-out) var(--reveal-delay, 0ms),
+      transform 0.75s var(--ease-spring) var(--reveal-delay, 0ms);
+  }
+
+  /* -------------------------------------------------------------------------
+   * Page entrance (CSS only, plays on load; works without JS)
+   * Children of .motion-enter rise in one after another.
+   * ----------------------------------------------------------------------- */
+  .motion-enter > * {
+    animation: motion-rise 0.8s var(--ease-soft) both;
+    animation-delay: calc(var(--enter-base, 40ms) + var(--enter-i, 0) * var(--enter-step, 85ms));
+  }
+  .motion-enter > :nth-child(2) { --enter-i: 1; }
+  .motion-enter > :nth-child(3) { --enter-i: 2; }
+  .motion-enter > :nth-child(4) { --enter-i: 3; }
+  .motion-enter > :nth-child(5) { --enter-i: 4; }
+  .motion-enter > :nth-child(6) { --enter-i: 5; }
+  .motion-enter > :nth-child(n + 7) { --enter-i: 6; }
+
+  /* A single block rising in (certificate sheet), and small "pop" accents on it. */
+  .motion-rise {
+    animation: motion-rise 0.9s var(--ease-soft) both;
+    animation-delay: var(--enter-base, 120ms);
+  }
+  .motion-pop-in {
+    animation: motion-pop 0.7s var(--ease-spring) both;
+    animation-delay: var(--enter-base, 600ms);
+  }
+  .motion-fade-in {
+    animation: motion-fade 0.35s var(--ease-out) both;
+  }
+
+  /* Page-header photo settles from a slight zoom; home hero photo drifts very slowly. */
+  .motion-settle {
+    animation: motion-settle 1.8s var(--ease-out) both;
+  }
+  .motion-kenburns {
+    animation: motion-kenburns 24s ease-in-out infinite alternate;
+    transform-origin: 50% 25%;
+  }
+
+  /* Contact form: success card + check mark. */
+  .motion-success {
+    animation: motion-rise 0.6s var(--ease-soft) both;
+  }
+  .motion-success-icon {
+    animation: motion-pop 0.6s var(--ease-spring) 0.15s both;
+  }
+}
+
+/* Scroll-linked effects: compositor-driven, no JS listeners. */
+@supports (animation-timeline: scroll()) {
+  @media screen and (prefers-reduced-motion: no-preference) {
+    .motion-parallax {
+      animation: motion-parallax linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 100vh;
+    }
+    [data-site-header] {
+      animation: motion-header-scrolled linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 96px;
+    }
+    [data-site-header] .motion-logo {
+      animation: motion-logo-shrink linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0 96px;
+    }
+  }
+}
+/* Fallback (no scroll timelines, or reduced motion): <MotionRuntime/> sets data-scrolled. */
+[data-site-header] {
+  transition:
+    box-shadow 0.3s var(--ease-out),
+    background-color 0.3s var(--ease-out);
+}
+[data-site-header][data-scrolled="true"] {
+  background-color: rgb(255 255 255 / 0.94);
+  box-shadow: 0 10px 30px -18px rgb(20 24 15 / 0.28);
+}
+[data-site-header] .motion-logo {
+  transform-origin: 0 50%;
+}
+:root[dir="rtl"] [data-site-header] .motion-logo {
+  transform-origin: 100% 50%;
+}
+
+/* ---------------------------------------------------------------------------
+ * Micro-interactions
+ * ------------------------------------------------------------------------- */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  /* Arrow icons nudge the way they point. */
+  :where(a, button, summary) [data-icon="forward"],
+  :where(a, button, summary) [data-icon="back"] {
+    transition: translate 0.3s var(--ease-out);
+  }
+  :where(a, button, summary):hover [data-icon="forward"] {
+    translate: -3px 0;
+  }
+  :where(a, button, summary):hover [data-icon="back"] {
+    translate: 3px 0;
+  }
+}
+
+/* Desktop nav: underline that grows from the centre on hover (the active item has a pill). */
+.nav-link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0.9rem;
+  bottom: 0.3rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand);
+  transform: scaleX(0);
+  transition: transform 0.3s var(--ease-out);
+}
+@media (hover: hover) {
+  .nav-link:not([aria-current="page"]):hover::after {
+    transform: scaleX(1);
+  }
+}
+.nav-link:not([aria-current="page"]):focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Mobile menu: fade + slide down; display toggles discretely so the closed panel leaves the
+ * tab order. Browsers without @starting-style / allow-discrete simply show/hide instantly. */
+.mobile-panel {
+  display: none;
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  transition:
+    opacity 0.2s var(--ease-out),
+    transform 0.25s var(--ease-out),
+    display 0.25s allow-discrete;
+}
+.mobile-panel[data-open="true"] {
+  display: block;
+  opacity: 1;
+  transform: none;
+}
+@starting-style {
+  .mobile-panel[data-open="true"] {
+    opacity: 0;
+    transform: translate3d(0, -8px, 0);
+  }
+}
+.mobile-panel[data-open="true"] li {
+  animation: motion-rise 0.4s var(--ease-soft) both;
+}
+.mobile-panel[data-open="true"] li:nth-child(2) { animation-delay: 40ms; }
+.mobile-panel[data-open="true"] li:nth-child(3) { animation-delay: 80ms; }
+.mobile-panel[data-open="true"] li:nth-child(4) { animation-delay: 120ms; }
+.mobile-panel[data-open="true"] li:nth-child(n + 5) { animation-delay: 160ms; }
+
+/* Menu/close icon swap */
+.icon-swap {
+  animation: motion-pop 0.3s var(--ease-out) both;
+}
+
+/* FAQ <details>: smooth height where ::details-content + interpolate-size exist; otherwise
+ * the answer just fades in. */
+details.faq[open] > :not(summary) {
+  animation: motion-fade 0.35s var(--ease-out) both;
+}
+@supports (interpolate-size: allow-keywords) and selector(::details-content) {
+  details.faq {
+    interpolate-size: allow-keywords;
+  }
+  details.faq::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 0.35s var(--ease-out),
+      content-visibility 0.35s allow-discrete;
+  }
+  details.faq[open]::details-content {
+    block-size: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Route transitions (React <ViewTransition>, see components/motion/PageTransition.tsx)
+ * ------------------------------------------------------------------------- */
+::view-transition {
+  pointer-events: none; /* clicks during the short transition reach the live page */
+}
+/* The page frame (background + footer) swaps instantly, so the footer never ghosts between
+ * two positions; only the page content (.page-exit / .page-enter below) cross-fades. */
+::view-transition-old(root) {
+  display: none;
+}
+::view-transition-new(root) {
+  animation: none;
+}
+/* Header stays put. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+::view-transition-old(.page-exit) {
+  animation: vt-page-exit 160ms ease-in both;
+}
+::view-transition-new(.page-enter) {
+  animation: vt-page-enter 340ms var(--ease-out) 90ms both;
+}
+
+/* ---------------------------------------------------------------------------
+ * Reduced motion and print: everything still, everything visible.
+ * ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+  .mobile-panel,
+  .mobile-panel[data-open="true"] li,
+  .icon-swap,
+  details.faq[open] > :not(summary) {
+    animation: none;
+    transition: none;
+  }
+  details.faq::details-content {
+    transition: none;
+  }
+}
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

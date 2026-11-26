@@ -4,13 +4,15 @@ import Link from "next/link";
 import { pages, site, getCourse, getCertificates, courseRoute } from "@/lib/content";
 import { ogBase } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/url";
-import { container, btnPrimary, btnSecondary, eyebrow } from "@/components/ui/styles";
+import { container, btnPrimary, btnSecondary, eyebrow, cardLift } from "@/components/ui/styles";
 import { Diamond, DiamondRule } from "@/components/ui/Diamond";
 import { faDigits, faNumber } from "@/components/ui/format";
 import { ArrowForward, ShieldCheck, Users, Sparkles, Clock, School } from "@/components/ui/icons";
 import { VerifyForm } from "@/components/certificates/VerifyForm";
 import { Bear } from "@/components/bot/Bear";
 import { BaleIcon } from "@/components/contact/BaleIcon";
+import { Reveal, Stagger } from "@/components/motion/Reveal";
+import { CountUp } from "@/components/motion/CountUp";
 
 export const metadata: Metadata = {
   alternates: { canonical: absoluteUrl("/") },
@@ -49,9 +51,17 @@ export default function Home() {
       <section aria-labelledby="hero-title" className="relative isolate overflow-hidden bg-white">
         <div
           aria-hidden="true"
-          className="absolute top-0 -z-10 aspect-[1920/1282] w-[175%] left-[-72%] sm:w-[130%] sm:left-[-30%] lg:inset-x-0 lg:w-full lg:-top-[3vw]"
+          className="motion-parallax absolute top-0 -z-10 aspect-[1920/1282] w-[175%] overflow-hidden left-[-72%] sm:w-[130%] sm:left-[-30%] lg:inset-x-0 lg:w-full lg:-top-[3vw]"
         >
-          <Image src={hero.image} alt="" fill preload sizes="(min-width: 1024px) 100vw, 175vw" className="object-cover" />
+          {/* slow Ken-Burns drift (CSS only); the wrapper adds a light scroll-linked parallax where supported */}
+          <Image
+            src={hero.image}
+            alt=""
+            fill
+            preload
+            sizes="(min-width: 1024px) 100vw, 175vw"
+            className="motion-kenburns object-cover"
+          />
           {/* blend the photo's lower edge into the page white */}
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-b from-white/0 to-white" />
         </div>
@@ -62,7 +72,7 @@ export default function Home() {
         />
 
         <div
-          className={`${container} flex flex-col items-center pb-6 pt-[56vw] text-center sm:pb-8 sm:pt-[36vw] lg:pb-10 lg:pt-[min(27vw,34rem)]`}
+          className={`${container} motion-enter flex flex-col items-center pb-6 pt-[56vw] text-center sm:pb-8 sm:pt-[36vw] lg:pb-10 lg:pt-[min(27vw,34rem)]`}
         >
           <p className={`${eyebrow} ring-1 ring-brand/20`}>
             <Diamond className="size-3.5 text-brand" />
@@ -95,7 +105,7 @@ export default function Home() {
           {course && (
             <Link
               href={courseRoute(course.slug)}
-              className="mt-10 inline-flex items-center gap-3 rounded-2xl border border-line bg-white p-2.5 pe-5 text-start shadow-card transition-colors hover:border-brand"
+              className={`mt-10 inline-flex items-center gap-3 rounded-2xl border border-line bg-white p-2.5 pe-5 text-start shadow-card hover:border-brand ${cardLift}`}
             >
               <Image src={course.badge} alt="" width={250} height={250} sizes="48px" className="size-11" />
               <span className="text-sm leading-6">
@@ -110,7 +120,7 @@ export default function Home() {
       {/* ------------------------------------------------------------ Bale bot band */}
       <section aria-labelledby="bot-band-title" className="pt-4 sm:pt-8">
         <div className={container}>
-          <div className="relative grid grid-cols-1 items-center gap-6 overflow-hidden rounded-[2rem] bg-brand-soft p-6 ring-1 ring-brand/25 sm:p-10 md:grid-cols-[1fr_auto]">
+          <Reveal className="relative grid grid-cols-1 items-center gap-6 overflow-hidden rounded-[2rem] bg-brand-soft p-6 ring-1 ring-brand/25 sm:p-10 md:grid-cols-[1fr_auto]">
             <div>
               <p className={eyebrow}>ربات لرناموز در بله</p>
               <h2 id="bot-band-title" className="mt-3 text-2xl font-black leading-tight text-ink sm:text-3xl">
@@ -132,25 +142,26 @@ export default function Home() {
               </div>
             </div>
             <Bear pose="point" sizes="(min-width: 768px) 200px, 160px" className="mx-auto w-40 md:w-52" decorative />
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* ------------------------------------------------------------ Features */}
       <section aria-labelledby="features-title" className="py-16 sm:py-24">
         <div className={container}>
-          <div className="mx-auto max-w-2xl text-center">
+          <Reveal className="mx-auto max-w-2xl text-center">
             <DiamondRule />
             <h2 id="features-title" className="mt-4 text-3xl font-black text-ink sm:text-4xl">
               نگاه ما به یادگیری
             </h2>
             <p className="mt-4 leading-8 text-ink-2">سه ایده‌ای که پشت هر کاری است که در لرناموز انجام می‌دیم.</p>
-          </div>
+          </Reveal>
 
           <ol className="mt-14 space-y-16 sm:mt-20 sm:space-y-24">
             {features.map((f, i) => (
               <li key={f.title} className="grid items-center gap-8 md:grid-cols-2 md:gap-14">
-                <div className={i % 2 === 1 ? "md:order-2" : ""}>
+                {/* RTL: the first column is on the right. Each half slides in from its own side. */}
+                <Reveal variant={i % 2 === 1 ? "end" : "start"} className={i % 2 === 1 ? "md:order-2" : ""}>
                   {f.image ? (
                     <div className="overflow-hidden rounded-card border border-line bg-surface p-2 shadow-card">
                       <Image
@@ -165,8 +176,8 @@ export default function Home() {
                   ) : (
                     <MotifArt />
                   )}
-                </div>
-                <div>
+                </Reveal>
+                <Reveal variant={i % 2 === 1 ? "start" : "end"} delay={120}>
                   <div className="flex items-center gap-3">
                     <span
                       className={`relative inline-flex size-12 items-center justify-center ${FEATURE_ACCENTS[i % 3]}`}
@@ -179,7 +190,7 @@ export default function Home() {
                   </div>
                   <h3 className="mt-5 text-2xl font-black text-ink sm:text-3xl">{f.title}</h3>
                   <p className="mt-4 text-base leading-8 text-ink-2 sm:text-lg sm:leading-9">{f.body}</p>
-                </div>
+                </Reveal>
               </li>
             ))}
           </ol>
@@ -190,7 +201,7 @@ export default function Home() {
       {course && (
         <section aria-labelledby="toolbox-title" className="py-4 sm:py-8">
           <div className={container}>
-            <div className="relative overflow-hidden rounded-[2rem] bg-brand-soft px-6 py-12 ring-1 ring-brand/25 sm:px-12 sm:py-16">
+            <Reveal className="relative overflow-hidden rounded-[2rem] bg-brand-soft px-6 py-12 ring-1 ring-brand/25 sm:px-12 sm:py-16">
               <div className="motif-lattice absolute inset-0 opacity-25" aria-hidden="true" />
               <Diamond className="pointer-events-none absolute -bottom-10 start-1/3 size-28 text-gold opacity-25" />
               <div className="relative grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
@@ -213,24 +224,24 @@ export default function Home() {
                     و بهتر کردن روش‌های تدریس.
                   </p>
 
-                  <dl className="mt-8 grid grid-cols-3 gap-3 sm:max-w-md">
+                  <Stagger as="dl" step={90} className="mt-8 grid grid-cols-3 gap-3 sm:max-w-md">
                     {[
-                      { icon: Users, value: faNumber(graduates.length), label: "دانش‌آموخته" },
-                      { icon: Sparkles, value: faNumber(course.tools.length), label: "ابزار هوش مصنوعی" },
-                      { icon: Clock, value: faNumber(course.durationHours), label: "ساعت آموزش" },
+                      { icon: Users, value: graduates.length, label: "دانش‌آموخته" },
+                      { icon: Sparkles, value: course.tools.length, label: "ابزار هوش مصنوعی" },
+                      { icon: Clock, value: course.durationHours, label: "ساعت آموزش" },
                     ].map((s) => (
                       <div key={s.label} className="rounded-2xl bg-white p-3 text-center shadow-card ring-1 ring-brand/15 sm:p-4">
                         <dt className="sr-only">{s.label}</dt>
                         <dd>
                           <s.icon className="mx-auto size-5 text-brand-strong" />
-                          <span className="mt-2 block text-3xl font-black text-ink">{s.value}</span>
+                          <CountUp value={s.value} className="mt-2 text-3xl font-black text-ink" />
                           <span className="mt-1 block text-xs text-ink-2 sm:text-sm" aria-hidden="true">
                             {s.label}
                           </span>
                         </dd>
                       </div>
                     ))}
-                  </dl>
+                  </Stagger>
 
                   <Link
                     href={courseRoute(course.slug)}
@@ -243,7 +254,7 @@ export default function Home() {
 
                 <div>
                   <h3 className="mb-4 text-sm font-bold text-ink-2">ابزارهایی که با آن‌ها کار کردیم</h3>
-                  <ul className="grid grid-cols-4 gap-2 sm:gap-3">
+                  <Stagger as="ul" variant="pop" step={45} max={11} className="grid grid-cols-4 gap-2 sm:gap-3">
                     {course.tools.map((t) => (
                       <li
                         key={t.name}
@@ -257,10 +268,10 @@ export default function Home() {
                         </span>
                       </li>
                     ))}
-                  </ul>
+                  </Stagger>
                 </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
       )}
@@ -268,11 +279,17 @@ export default function Home() {
       {/* ---------------------------------------------------- Verify a cert */}
       <section aria-labelledby="verify-title" className="py-16 sm:py-24">
         <div className={container}>
-          <div className="grid grid-cols-1 items-center gap-8 rounded-[2rem] border border-line bg-surface p-6 shadow-card sm:p-10 lg:grid-cols-[auto_1fr_1.1fr] lg:gap-10">
-            <span className="relative inline-flex size-20 items-center justify-center text-gold" aria-hidden="true">
+          <Reveal className="grid grid-cols-1 items-center gap-8 rounded-[2rem] border border-line bg-surface p-6 shadow-card sm:p-10 lg:grid-cols-[auto_1fr_1.1fr] lg:gap-10">
+            <Reveal
+              as="span"
+              variant="pop"
+              delay={200}
+              className="relative inline-flex size-20 items-center justify-center text-gold"
+              aria-hidden="true"
+            >
               <Diamond className="absolute inset-0 size-20 opacity-25" />
               <ShieldCheck className="relative size-9 text-ink" />
-            </span>
+            </Reveal>
             <div>
               <h2 id="verify-title" className="text-2xl font-black text-ink sm:text-3xl">
                 استعلام گواهی
@@ -282,13 +299,13 @@ export default function Home() {
               </p>
             </div>
             <VerifyForm id="home-verify" />
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* ------------------------------------------------------ Closing CTA */}
       <section aria-labelledby="closing-title" className="pb-4">
-        <div className={`${container} text-center`}>
+        <Stagger className={`${container} text-center`} step={90}>
           <DiamondRule />
           <h2 id="closing-title" className="mx-auto mt-5 max-w-2xl text-3xl font-black leading-tight text-ink sm:text-4xl">
             بیایید با هم، یادگیری را بهتر کنیم
@@ -305,7 +322,7 @@ export default function Home() {
               بیشتر دربارهٔ ما
             </Link>
           </div>
-        </div>
+        </Stagger>
       </section>
     </>
   );
