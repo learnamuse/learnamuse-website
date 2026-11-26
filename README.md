@@ -1,6 +1,6 @@
 # Learnamuse website (لرناموز)
 
-This is the Persian, right-to-left website for Learnamuse. It is a redesign of the WordPress site at https://learnamuse.com and is built as a **Next.js 16 static export** hosted on **GitHub Pages**. There is no contact form: the contact page sends visitors to the Learnamuse **Bale** bot ([@LearnamuseBot](https://ble.ir/LearnamuseBot)) and to Telegram support.
+This is the Persian, right-to-left website for Learnamuse. It is a redesign of the WordPress site at https://learnamuse.com and is built as a **Next.js 16 static export** hosted on **GitHub Pages**. There is no contact form: website visitors contact the team through **Telegram** support (@LearnAmuseSupport). Support inside the **Bale** bot (@LearnamuseBot) is only for existing bot members.
 
 For the team contract (hard constraints and file ownership), see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
@@ -74,7 +74,7 @@ All of these are `force-static` route handlers. In the export, a handler whose f
 
 ## Contact
 
-The contact page (`/contact-us/`), the footer and the `/bale-bot/` page link to the contact channels in `content/site.json` → `contact`: the Bale bot (`bale`, `baleHandle`) as the main channel, and Telegram support (`telegram`, `telegramHandle`). `email` there is a no-reply sender address and is not shown as a channel. To change a channel, edit that file; no backend is involved.
+The contact page (`/contact-us/`), the footer and the `/bale-bot/` page link to the contact channels in `content/site.json` → `contact`. Telegram support (`telegram`, `telegramHandle`) is the channel for website visitors; the Bale bot (`bale`, `baleHandle`) is shown only as support for existing bot members. `email` there is a no-reply sender address and is not shown as a channel. To change a channel, edit that file; no backend is involved.
 
 ## Deployment (GitHub Pages)
 

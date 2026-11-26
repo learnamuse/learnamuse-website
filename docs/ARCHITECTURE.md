@@ -38,4 +38,4 @@ Defined in `src/app/globals.css` and exposed as Tailwind colors: `brand`, `brand
 Both agents may add npm dependencies (`npm i <pkg>@<exact-version>`).
 
 ## Contact
-There is no form or contact backend. Contact pages link to the channels in `content/site.json` → `contact`: the Bale bot is the main channel and Telegram is secondary.
+There is no form or contact backend. Contact pages link to the channels in `content/site.json` → `contact`: Telegram is the channel for website visitors; the Bale bot's support section is only for existing bot members.

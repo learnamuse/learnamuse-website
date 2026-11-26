@@ -41,12 +41,12 @@
   },
   "social": [
     {
-      "label": "Bale",
-      "href": "https://ble.ir/LearnamuseBot"
-    },
-    {
       "label": "Telegram",
       "href": "https://t.me/LearnAmuseSupport"
+    },
+    {
+      "label": "Bale",
+      "href": "https://ble.ir/LearnamuseBot"
     }
   ]
 }

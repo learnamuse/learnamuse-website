@@ -30,13 +30,13 @@ export function Footer() {
             <p className="max-w-xl text-lg font-bold leading-9 text-ink sm:text-xl">{site.footer.cta}</p>
             <div className="flex flex-wrap gap-3">
               <a
-                href={site.contact.bale}
+                href={site.contact.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`inline-flex items-center gap-2 rounded-full bg-brand px-5 py-3 font-bold text-brand-ink hover:bg-brand-strong hover:text-white hover:shadow-lift-brand ${pressable}`}
               >
-                <BaleIcon className="size-5" />
-                گفتگو در بله
+                <Telegram className="size-5" />
+                پیام در تلگرام
                 <span className="sr-only">(در پنجرهٔ جدید باز می‌شود)</span>
               </a>
               <Link
@@ -83,18 +83,6 @@ export function Footer() {
           <ul className="space-y-3">
             <li>
               <a
-                href={site.contact.bale}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-ink-2 hover:text-brand-strong"
-              >
-                <BaleIcon className="size-4 shrink-0 text-brand-strong" />
-                <span>بله:</span>
-                <span dir="ltr">{site.contact.baleHandle}</span>
-              </a>
-            </li>
-            <li>
-              <a
                 href={site.contact.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -102,6 +90,18 @@ export function Footer() {
               >
                 <Telegram className="size-4 shrink-0 text-brand-strong" />
                 <span dir="ltr">{site.contact.telegramHandle}</span>
+              </a>
+            </li>
+            <li>
+              <a
+                href={site.contact.bale}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-ink-2 hover:text-brand-strong"
+              >
+                <BaleIcon className="size-4 shrink-0 text-brand-strong" />
+                <span>ربات لرناموز در بله</span>
+                <span className="text-xs text-ink-3">(ویژهٔ اعضا)</span>
               </a>
             </li>
           </ul>
