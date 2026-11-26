@@ -76,7 +76,7 @@ export default async function CoursePage({ params }: PageProps<"/certificates/[c
               </p>
             </div>
             <div className="relative mx-auto size-36 shrink-0 sm:size-44 lg:mx-0">
-              <Diamond className="absolute inset-0 size-full text-gold opacity-20" />
+              <Diamond className="absolute inset-0 size-full text-secondary opacity-20" />
               <Image
                 src={course.badge}
                 alt="نشان گواهی کارگاه"

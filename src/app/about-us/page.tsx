@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 /** Each value gets its own icon and accent so the three cards read as distinct ideas. */
 const VALUE_STYLES = [
   { icon: Bolt, accent: "text-brand", tint: "bg-brand-soft", bar: "bg-brand", badge: "brand" },
-  { icon: HandHeart, accent: "text-gold", tint: "bg-gold-soft", bar: "bg-gold", badge: "gold" },
+  { icon: HandHeart, accent: "text-secondary", tint: "bg-secondary-soft", bar: "bg-secondary", badge: "secondary" },
   { icon: Inclusive, accent: "text-brand-strong", tint: "bg-surface-2", bar: "bg-brand-strong", badge: "outline" },
 ] as const;
 
@@ -56,7 +56,7 @@ export default function AboutPage() {
                   />
                   <div className="flex items-center justify-between">
                     <span className={`inline-flex size-14 items-center justify-center rounded-2xl ${s.tint}`}>
-                      <s.icon className={`size-7 ${s.accent === "text-gold" ? "text-ink" : "text-brand-strong"}`} />
+                      <s.icon className={`size-7 ${s.accent === "text-secondary" ? "text-ink" : "text-brand-strong"}`} />
                     </span>
                     <NumberBadge value={i + 1} variant={s.badge} />
                   </div>

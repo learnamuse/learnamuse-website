@@ -105,7 +105,7 @@ export default function BaleBotPage() {
                     aria-hidden="true"
                     viewBox="0 0 200 14"
                     preserveAspectRatio="none"
-                    className="absolute -bottom-2 start-0 h-3 w-full text-gold"
+                    className="absolute -bottom-2 start-0 h-3 w-full text-secondary"
                   >
                     <path d="M2 10C50 3 120 1 198 7" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" />
                   </svg>
@@ -194,7 +194,7 @@ export default function BaleBotPage() {
           <Reveal className="relative mx-auto mt-10 max-w-4xl">
             <div
               aria-hidden="true"
-              className="absolute -inset-3 -z-10 rounded-[2.4rem] bg-linear-to-br from-brand/25 via-brand-soft to-gold/25 blur-xl"
+              className="absolute -inset-3 -z-10 rounded-[2.4rem] bg-linear-to-br from-brand/25 via-brand-soft to-secondary/25 blur-xl"
             />
             <video
               controls
@@ -230,14 +230,14 @@ export default function BaleBotPage() {
       {/* ---------------------------------------------------------- Certificates */}
       <section aria-labelledby="cert-title" className="py-16 sm:py-24">
         <div className={container}>
-          <Reveal className="relative overflow-hidden rounded-[2rem] border border-line bg-linear-to-br from-gold-soft via-white to-brand-soft px-6 py-10 sm:px-10 lg:px-14 lg:py-14">
+          <Reveal className="relative overflow-hidden rounded-[2rem] border border-line bg-linear-to-br from-secondary-soft via-white to-brand-soft px-6 py-10 sm:px-10 lg:px-14 lg:py-14">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute -end-24 -top-24 size-80 rounded-full bg-[radial-gradient(closest-side,rgb(242_181_68/0.22),rgb(242_181_68/0))]"
             />
             <div className="relative grid items-center gap-10 lg:grid-cols-[1.25fr_1fr]">
               <div>
-                <p className="inline-flex items-center gap-2 rounded-full bg-gold-soft px-3 py-1 text-xs font-bold text-ink ring-1 ring-gold/50 sm:text-sm">
+                <p className="inline-flex items-center gap-2 rounded-full bg-secondary-soft px-3 py-1 text-xs font-bold text-ink ring-1 ring-secondary/50 sm:text-sm">
                   <ShieldCheck className="size-4 text-brand-strong" />
                   {certificates.eyebrow}
                 </p>
@@ -292,7 +292,7 @@ export default function BaleBotPage() {
                     delay={i * 80}
                     className="group relative h-full overflow-hidden rounded-card border border-line bg-surface p-6 shadow-card"
                   >
-                    <span className="absolute inset-x-0 top-0 h-1 bg-linear-to-l from-brand to-gold" aria-hidden="true" />
+                    <span className="absolute inset-x-0 top-0 h-1 bg-linear-to-l from-brand to-secondary" aria-hidden="true" />
                     <NumberBadge value={i + 1} variant="soft" />
                     <h3 className="mt-3 text-lg font-black text-ink">{m.title}</h3>
                     <p className="mt-2 leading-7 text-ink-2">{m.body}</p>

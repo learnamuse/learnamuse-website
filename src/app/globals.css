@@ -10,7 +10,7 @@
 
 /*
  * Learnamuse design tokens.
- * Brand green sampled from the logo (#7FD141). Gold comes from the certificate badge.
+ * Brand green sampled from the logo (#7FD141). Secondary accent is the palette blue (#5F8FFF / #99B8FF).
  * Use these via Tailwind utilities: bg-brand, text-ink, border-line, bg-surface, etc.
  */
 :root {
@@ -19,8 +19,8 @@
   --brand-strong: #407c17;   /* AA-contrast green for text/links on light bg (>= 4.6:1 on bg, surface-2, brand-soft) */
   --brand-soft: #eef8e4;
   --brand-ink: #1f3d0a;      /* text on brand-colored surfaces */
-  --gold: #f2b544;
-  --gold-soft: #fdf3dc;
+  --secondary: #5f8fff;   /* palette blue: secondary accent (was orange/gold) */
+  --secondary-soft: #ebf1ff;
 
   --bg: #ffffff;
   --surface: #ffffff;
@@ -41,8 +41,8 @@
   --color-brand-strong: var(--brand-strong);
   --color-brand-soft: var(--brand-soft);
   --color-brand-ink: var(--brand-ink);
-  --color-gold: var(--gold);
-  --color-gold-soft: var(--gold-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-soft: var(--secondary-soft);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -156,12 +156,12 @@ body {
     --nb-edge: color-mix(in oklab, var(--brand) 70%, transparent);
     --nb-shadow: transparent;
   }
-  .num-badge[data-variant="gold"] {
-    --nb-fill: var(--gold);
-    --nb-hi: #f8cf7c;
+  .num-badge[data-variant="secondary"] {
+    --nb-fill: var(--secondary);
+    --nb-hi: #99b8ff;
     --nb-ink: var(--ink);
     --nb-ring: rgb(255 255 255 / 0.55);
-    --nb-shadow: rgb(150 100 10 / 0.3);
+    --nb-shadow: rgb(40 70 170 / 0.3);
   }
   .num-badge[data-variant="outline"] {
     --nb-fill: var(--surface);
@@ -207,12 +207,12 @@ body {
   --line: #e3e7da;
   --brand: #7fd141;
   --brand-strong: #4f9a1c;
-  --gold: #e2a530;
+  --secondary: #5f8fff;
   color: var(--ink);
   background-color: var(--surface);
   background-image:
     radial-gradient(circle at 0 0, color-mix(in oklab, var(--brand) 10%, transparent) 0 12rem, transparent 12rem),
-    radial-gradient(circle at 100% 100%, color-mix(in oklab, var(--gold) 14%, transparent) 0 10rem, transparent 10rem);
+    radial-gradient(circle at 100% 100%, color-mix(in oklab, var(--secondary) 14%, transparent) 0 10rem, transparent 10rem);
 }
 
 /* ---------------------------------------------------------------------------
@@ -229,8 +229,8 @@ body {
     --brand-strong: #4f9a1c;
     --brand-soft: #eef8e4;
     --brand-ink: #1f3d0a;
-    --gold: #f2b544;
-    --gold-soft: #fdf3dc;
+    --secondary: #5f8fff;
+    --secondary-soft: #ebf1ff;
     --bg: #ffffff;
     --surface: #ffffff;
     --surface-2: #f3f5ee;

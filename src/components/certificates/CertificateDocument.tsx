@@ -29,7 +29,7 @@ export function CertificateDocument({
       >
         {/* corner ornaments */}
         <Diamond className="pointer-events-none absolute -start-[6%] -top-[9%] hidden size-[22%] text-brand opacity-[0.12] @2xl:block" />
-        <Diamond className="pointer-events-none absolute -bottom-[10%] -end-[5%] hidden size-[20%] text-gold opacity-[0.16] @2xl:block" />
+        <Diamond className="pointer-events-none absolute -bottom-[10%] -end-[5%] hidden size-[20%] text-secondary opacity-[0.16] @2xl:block" />
 
         <div className="relative flex h-full flex-col rounded-[1rem] border-2 border-brand/70 px-5 py-6 @2xl:rounded-[1.4cqw] @2xl:px-[4cqw] @2xl:py-[2.6cqw]">
           {/* inner hairline */}
@@ -86,7 +86,7 @@ export function CertificateDocument({
               {cert.nameEn}
             </p>
 
-            <div className="my-4 flex items-center gap-3 text-gold @2xl:my-[1.8cqw] @2xl:gap-[1cqw]" aria-hidden="true">
+            <div className="my-4 flex items-center gap-3 text-secondary @2xl:my-[1.8cqw] @2xl:gap-[1cqw]" aria-hidden="true">
               <span className="h-px w-16 bg-linear-to-l from-transparent to-current @2xl:w-[10cqw]" />
               <Diamond className="size-3.5 @2xl:size-[1.4cqw]" />
               <span className="h-px w-16 bg-linear-to-r from-transparent to-current @2xl:w-[10cqw]" />

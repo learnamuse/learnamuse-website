@@ -1,7 +1,7 @@
 import { faNumber } from "./format";
 
 export type NumberBadgeSize = "sm" | "md" | "lg";
-export type NumberBadgeVariant = "brand" | "soft" | "gold" | "outline";
+export type NumberBadgeVariant = "brand" | "soft" | "secondary" | "outline";
 
 /**
  * Numbered marker for steps, features and values.
@@ -14,7 +14,7 @@ export type NumberBadgeVariant = "brand" | "soft" | "gold" | "outline";
  * Contrast of the numeral on its tile (WCAG):
  *   brand   #1f3d0a on #7fd141 ≈ 6.4:1 (7.2:1 under the highlight)
  *   soft    #407c17 on #eef8e4 ≈ 4.7:1
- *   gold    #14180f on #f2b544 ≈ 9.8:1
+ *   secondary #14180f on #5f8fff ≈ 6.3:1 (palette blue)
  *   outline #407c17 on #ffffff ≈ 5.1:1
  *
  * Accessibility: by default the whole badge is hidden from assistive tech (the surrounding

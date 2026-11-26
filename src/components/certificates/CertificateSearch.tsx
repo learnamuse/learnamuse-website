@@ -129,7 +129,7 @@ export function CertificateSearch({ entries }: { entries: SearchEntry[] }) {
                   href={r.route}
                   className="group flex items-center gap-4 rounded-card border border-line bg-surface p-4 shadow-card transition-[translate,box-shadow,border-color] duration-300 ease-out hover:border-brand hover:shadow-lift motion-safe:hover:-translate-y-0.5 sm:p-5"
                 >
-                  <span className="relative inline-flex size-12 shrink-0 items-center justify-center text-gold">
+                  <span className="relative inline-flex size-12 shrink-0 items-center justify-center text-secondary">
                     <Diamond className="absolute inset-0 size-12 opacity-30" />
                     <ShieldCheck className="relative size-6 text-ink" />
                   </span>

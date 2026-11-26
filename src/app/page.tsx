@@ -197,7 +197,7 @@ export default function Home() {
           <div className={container}>
             <Reveal className="relative overflow-hidden rounded-[2rem] bg-brand-soft px-6 py-12 ring-1 ring-brand/25 sm:px-12 sm:py-16">
               <div className="motif-lattice absolute inset-0 opacity-25" aria-hidden="true" />
-              <Diamond className="pointer-events-none absolute -bottom-10 start-1/3 size-28 text-gold opacity-25" />
+              <Diamond className="pointer-events-none absolute -bottom-10 start-1/3 size-28 text-secondary opacity-25" />
               <div className="relative grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
                 <div>
                   <p className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 text-sm font-bold text-brand-strong ring-1 ring-brand/25">
@@ -278,7 +278,7 @@ export default function Home() {
               as="span"
               variant="pop"
               delay={200}
-              className="relative inline-flex size-20 items-center justify-center text-gold"
+              className="relative inline-flex size-20 items-center justify-center text-secondary"
               aria-hidden="true"
             >
               <Diamond className="absolute inset-0 size-20 opacity-25" />
@@ -326,14 +326,14 @@ export default function Home() {
 function MotifArt() {
   const cells = [
     "text-brand",
-    "text-gold",
+    "text-secondary",
     "text-brand-strong",
     "text-brand/60",
-    "text-gold/70",
+    "text-secondary/70",
     "text-brand",
     "text-ink-3/50",
     "text-brand-strong/70",
-    "text-gold",
+    "text-secondary",
   ];
   const sizes = ["size-14", "size-10", "size-16", "size-12", "size-16", "size-9", "size-12", "size-14", "size-10"];
   return (

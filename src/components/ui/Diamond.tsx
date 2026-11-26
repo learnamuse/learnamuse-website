@@ -1,6 +1,6 @@
 /**
  * The Learnamuse motif: the logo's rounded diamond with a dot punched through it.
- * Inherits colour from `currentColor`, so `text-brand` / `text-gold` etc. just work.
+ * Inherits colour from `currentColor`, so `text-brand` / `text-secondary` etc. just work.
  */
 export function Diamond({ className = "size-4", title }: { className?: string; title?: string }) {
   return (
